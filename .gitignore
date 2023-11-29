@@ -1,0 +1,15 @@
+# Ignore Dataset_alpha and its copies
+Dataset_alpha/
+Dataset_alpha_copy/
+
+# Ignore Original_Dataset
+Original_Dataset/
+
+# Ignore classmates_test_images
+classmates_test_images/
+
+# Ignore files with .h5 extension
+*.h5
+
+#ignore 
+.DS_Store
