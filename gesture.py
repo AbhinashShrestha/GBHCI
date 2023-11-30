@@ -7,12 +7,13 @@ import os
 data_dir = "Dataset_alpha"
 class_names = sorted(os.listdir(data_dir))
 
+
 # Load the trained model
 model = load_model('Models/V2M.h5')
 img_height = 380
 img_width=380
 # Load the image
-img_path = 'Dataset_alpha/Right_Click/image_1.jpg'  # replace with the path to your image
+img_path = 'classmates_test_images/shashin.jpg'  # replace with the path to your image
 img = image.load_img(img_path, target_size=(img_height, img_width))
 
 # Preprocess the image
