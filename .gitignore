@@ -11,5 +11,9 @@ classmates_test_images/
 # Ignore files with .h5 extension
 *.h5
 
+# Ignore files with .pth extension
+*.pth
+
 #ignore 
 .DS_Store
+
