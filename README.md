@@ -29,3 +29,6 @@ pip install pyparsing
 pip install efficientnet
 
 pip install mediapipe
+
+
+For the models and other dataset you know where to find then if not message me.
