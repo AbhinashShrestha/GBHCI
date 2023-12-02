@@ -1,38 +1,52 @@
 import cv2
-import numpy as np
-import matplotlib.pyplot as plt
+import mediapipe as mp
 
-# Load the image
-img_path = 'Dataset_alpha/Brightness_Increase/image_1.jpg'  # replace with the path to your image
-img = cv2.imread(img_path)
+# Initialize MediaPipe Hands.
+mp_hands = mp.solutions.hands
+hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
-# Create the background subtractor
-backSub = cv2.createBackgroundSubtractorMOG2()
+# Initialize MediaPipe DrawingUtils.
+mp_drawing = mp.solutions.drawing_utils
 
-# Apply background subtraction
-fgMask = backSub.apply(img)
+# OpenCV VideoCapture.
+cap = cv2.VideoCapture(0)
 
-# Apply a binary threshold to the foreground mask
-_, fgMask = cv2.threshold(fgMask, 244, 255, cv2.THRESH_BINARY)
+while cap.isOpened():
+    ret, frame = cap.read()
+    if not ret:
+        continue
 
-# Bitwise-and the mask with the original image
-img_segmented = cv2.bitwise_and(img, img, mask=fgMask)
+    # Flip the image horizontally for a later selfie-view display.
+    frame = cv2.flip(frame, 1)
+    # Convert the BGR image to RGB.
+    rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-# Convert the images from BGR to RGB
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-img_segmented = cv2.cvtColor(img_segmented, cv2.COLOR_BGR2RGB)
+    # Process the image and find hands.
+    results = hands.process(rgb_frame)
 
-# Display the images side by side
-plt.figure(figsize=(10, 5))
-plt.subplot(1, 2, 1)
-plt.imshow(img)
-plt.title('Original Image')
-plt.axis('off')
+    # Draw the hand annotations on the image.
+    for hand_landmarks in results.multi_hand_landmarks:
+        mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
-plt.subplot(1, 2, 2)
-plt.imshow(img_segmented)
-plt.title('Segmented Image')
-plt.axis('off')
+        # Get the bounding box coordinates.
+        x_min = int(min(landmark.x for landmark in hand_landmarks.landmark) * frame.shape[1])
+        y_min = int(min(landmark.y for landmark in hand_landmarks.landmark) * frame.shape[0])
+        x_max = int(max(landmark.x for landmark in hand_landmarks.landmark) * frame.shape[1])
+        y_max = int(max(landmark.y for landmark in hand_landmarks.landmark) * frame.shape[0])
 
-plt.show()
+        # Draw the bounding box.
+        cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
 
+        # Capture the image within the bounding box.
+        captured_image = frame[y_min:y_max, x_min:x_max]
+
+    # Display the resulting frame.
+    cv2.imshow('MediaPipe Hands', frame)
+
+    # Exit loop if 'q' is pressed.
+    if cv2.waitKey(5) & 0xFF == ord('q'):
+        break
+
+# Release the VideoCapture and close OpenCV windows.
+cap.release()
+cv2.destroyAllWindows()
