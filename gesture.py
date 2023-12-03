@@ -9,11 +9,11 @@ class_names = sorted(os.listdir(data_dir))
 
 
 # Load the trained model
-model = load_model('Models/V2M.h5')
+model = load_model('Models/V2M_alpha.h5')
 img_height = 380
 img_width=380
 # Load the image
-img_path = 'classmates_test_images/fist.jpg'  # replace with the path to your image
+img_path = 'classmates_test_images/aa.png'  # replace with the path to your image
 img = image.load_img(img_path, target_size=(img_height, img_width))
 
 # Preprocess the image
