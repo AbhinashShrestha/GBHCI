@@ -1,4 +1,4 @@
-# majorproject
+# Major Project
 Gesture Based Human Computer Interactions.
 how to install
 Major project
