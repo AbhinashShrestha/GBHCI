@@ -4,7 +4,10 @@ Dataset_alpha_copy/
 
 # Ignore Original_Dataset
 Original_Dataset/
-
+Dataset
+asl_dataset
+asl
+Models
 # Ignore classmates_test_images
 classmates_test_images/
 
