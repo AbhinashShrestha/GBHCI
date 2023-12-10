@@ -8,12 +8,12 @@ import time
 import json
 
 # Load class_names
-with open('class_names.json', 'r') as f:
+with open('classes.json', 'r') as f:
     class_names = json.load(f)
     
 print(class_names)
 # Load the trained model
-model = load_model('Models/MultiModel.h5')
+model = load_model('Models/try_MultiModel_inception.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
