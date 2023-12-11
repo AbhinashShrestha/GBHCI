@@ -1,70 +1,41 @@
+import os
 import tensorflow as tf
 from tensorflow import keras
-from keras.applications import EfficientNetV2M
 from tensorflow.keras import layers
+from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow.keras import regularizers
 import matplotlib.pyplot as plt
+from keras.applications import EfficientNetV2L
 
-model = EfficientNetV2M(include_top=False, weights='imagenet')
+# Constants
+BATCH_SIZE = 16
+IMG_HEIGHT = 380
+IMG_WIDTH = 380
+DATA_DIR = "/content/drive/MyDrive/Colab Notebooks/Dataset_alpha"
 
-batch_size = 16
-img_height = 380
-img_width = 380
-data_dir = "/content/drive/MyDrive/Colab Notebooks/Dataset_alpha"
-
-train_ds = tf.keras.utils.image_dataset_from_directory(
-    data_dir,
-    validation_split=0.2,
-    subset="training",
-    seed=123,
-    image_size=(img_height, img_width),
-    batch_size=batch_size)
-
-val_ds = tf.keras.utils.image_dataset_from_directory(
-    data_dir,
-    validation_split=0.2,
-    subset="validation",
-    seed=123,
-    image_size=(img_height, img_width),
-    batch_size=batch_size)
-
-class_names = train_ds.class_names
-NUM_CLASSES = len(class_names)
-
+# Data augmentation
 data_augmentation = keras.Sequential(
-  [
-    layers.RandomFlip("horizontal",
-                      input_shape=(img_height,
-                                  img_width,
-                                  3)),
-    layers.RandomRotation(0.1,
-                          fill_mode="reflect",
-                          interpolation="bilinear",
-                          fill_value=0.0),
-    layers.RandomZoom(0.1,
-                      fill_mode="reflect",
-                      interpolation="bilinear",
-                      fill_value=0.0),
-    layers.RandomContrast(0.2),
-    layers.RandomBrightness(0.2),
-    layers.RandomTranslation(0.1, 0.1,
-                             fill_mode="reflect",
-                             interpolation="bilinear",
-                             fill_value=0.0),
-    layers.RandomCrop(img_height, img_width)
-  ]
+    [
+        layers.RandomFlip("horizontal", input_shape=(IMG_HEIGHT, IMG_WIDTH, 3)),
+        layers.RandomRotation(0.1, fill_mode="reflect", interpolation="bilinear", fill_value=0.0),
+        layers.RandomZoom(0.1, fill_mode="reflect", interpolation="bilinear", fill_value=0.0),
+        layers.RandomContrast(0.2),
+        layers.RandomBrightness(0.2),
+        layers.RandomTranslation(0.1, 0.1, fill_mode="reflect", interpolation="bilinear", fill_value=0.0),
+        layers.RandomCrop(IMG_HEIGHT, IMG_WIDTH)
+    ]
 )
 
-def preprocess(image, label):
+# Preprocessing
+def preprocess(image, label, num_classes):
     image = tf.map_fn(lambda img: tf.squeeze(data_augmentation(tf.expand_dims(img, 0)), axis=0), image)
-    label = tf.one_hot(label, NUM_CLASSES)
+    label = tf.one_hot(label, num_classes)
     return image, label
 
-train_ds = train_ds.map(preprocess)
-val_ds = val_ds.map(preprocess)
-
+# Model building
 def build_model(num_classes):
-    inputs = layers.Input(shape=(img_width, img_height, 3))
-    model = EfficientNetV2M(include_top=False, input_tensor=inputs, weights="imagenet")
+    inputs = layers.Input(shape=(IMG_WIDTH, IMG_HEIGHT, 3))
+    model = EfficientNetV2L(include_top=False, input_tensor=inputs, weights="imagenet")
 
     # Freeze the pretrained weights
     model.trainable = False
@@ -75,21 +46,16 @@ def build_model(num_classes):
 
     top_dropout_rate = 0.2
     x = layers.Dropout(top_dropout_rate, name="top_dropout")(x)
-    outputs = layers.Dense(num_classes, activation="softmax", name="pred")(x)
+    outputs = layers.Dense(num_classes, activation="softmax", name="pred", kernel_regularizer=regularizers.l2(0.01))(x)  # L2 regularization
 
     # Compile
     model = keras.Model(inputs, outputs, name="EfficientNet")
-    optimizer = keras.optimizers.Adam(learning_rate=1e-2)
-    model.compile(
-        optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy"]
-    )
+    lr_schedule = keras.optimizers.schedules.ExponentialDecay(initial_learning_rate=1e-3, decay_steps=10000, decay_rate=0.9)
+    optimizer = keras.optimizers.Adam(learning_rate=lr_schedule)
+    model.compile(optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy"])
     return model
 
-model = build_model(num_classes=NUM_CLASSES)
-
-epochs = 30
-hist = model.fit(train_ds, epochs=epochs, validation_data=val_ds)
-
+# Unfreeze model
 def unfreeze_model(model):
     # We unfreeze the top 20 layers while leaving BatchNorm layers frozen
     for layer in model.layers[-20:]:
@@ -97,33 +63,74 @@ def unfreeze_model(model):
             layer.trainable = True
 
     optimizer = keras.optimizers.Adam(learning_rate=1e-5)
-    model.compile(
-        optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy"]
-    )
+    model.compile(optimizer=optimizer, loss="categorical_crossentropy", metrics=["accuracy"])
 
-unfreeze_model(model)
+# Load data
+def load_data():
+    train_ds = tf.keras.utils.image_dataset_from_directory(
+        DATA_DIR,
+        validation_split=0.2,
+        subset="training",
+        seed=123,
+        image_size=(IMG_HEIGHT, IMG_WIDTH),
+        batch_size=BATCH_SIZE)
 
-epochs = 4
-hist = model.fit(train_ds, epochs=epochs, validation_data=val_ds)
+    val_ds = tf.keras.utils.image_dataset_from_directory(
+        DATA_DIR,
+        validation_split=0.2,
+        subset="validation",
+        seed=123,
+        image_size=(IMG_HEIGHT, IMG_WIDTH),
+        batch_size=BATCH_SIZE)
 
-# Plot training & validation accuracy values
-plt.figure(figsize=(14, 5))
-plt.subplot(1, 2, 1)
-plt.plot(hist.history['accuracy'])
-plt.plot(hist.history['val_accuracy'])
-plt.title('Model accuracy')
-plt.ylabel('Accuracy')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Validation'], loc='upper left')
+    return train_ds, val_ds
 
-# Plot training & validation loss values
-plt.subplot(1, 2, 2)
-plt.plot(hist.history['loss'])
-plt.plot(hist.history['val_loss'])
-plt.title('Model loss')
-plt.ylabel('Loss')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Validation'], loc='upper left')
-plt.show()
+def main():
+    train_ds, val_ds = load_data()
+    class_names = train_ds.class_names
+    num_classes = len(class_names)
 
-model.save('/content/drive/MyDrive/Colab Notebooks/V2M_alpha.h5')
+    train_ds = train_ds.map(lambda x, y: preprocess(x, y, num_classes))
+    val_ds = val_ds.map(lambda x, y: preprocess(x, y, num_classes))
+
+    model = build_model(num_classes=num_classes)
+
+    # Create a callback for early stopping
+    early_stopping_callback = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+
+    epochs = 15
+
+    # Continue training
+    hist = model.fit(train_ds, epochs=epochs, validation_data=val_ds, callbacks=[early_stopping_callback])
+
+    unfreeze_model(model)
+
+    epochs = 5
+    hist = model.fit(train_ds, epochs=epochs, validation_data=val_ds, callbacks=[early_stopping_callback])
+
+    # Save the entire model as a single file
+    model.save('/content/drive/MyDrive/Colab Notebooks/EV2L.h5')
+
+    # Plot training & validation accuracy values
+    plt.figure(figsize=(14, 5))
+    plt.subplot(1, 2, 1)
+    plt.plot(hist.history['accuracy'])
+    plt.plot(hist.history['val_accuracy'])
+    plt.title('Model accuracy')
+    plt.ylabel('Accuracy')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Validation'], loc='upper left')
+
+    # Plot training & validation loss values
+    plt.subplot(1, 2, 2)
+    plt.plot(hist.history['loss'])
+    plt.plot(hist.history['val_loss'])
+    plt.title('Model loss')
+    plt.ylabel('Loss')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Validation'], loc='upper left')
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()
