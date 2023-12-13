@@ -11,7 +11,7 @@ from keras.applications import EfficientNetV2L
 BATCH_SIZE = 16
 IMG_HEIGHT = 380
 IMG_WIDTH = 380
-DATA_DIR = "/content/drive/MyDrive/Colab Notebooks/Dataset_alpha"
+DATA_DIR = "/content/drive/MyDrive/Colab Notebooks/Dataset"
 
 # Data augmentation
 data_augmentation = keras.Sequential(
@@ -109,7 +109,7 @@ def main():
     hist = model.fit(train_ds, epochs=epochs, validation_data=val_ds, callbacks=[early_stopping_callback])
 
     # Save the entire model as a single file
-    model.save('/content/drive/MyDrive/Colab Notebooks/EV2L.h5')
+    model.save('/content/drive/MyDrive/Colab Notebooks/EV2L_asl_ko.h5')
 
     # Plot training & validation accuracy values
     plt.figure(figsize=(14, 5))
