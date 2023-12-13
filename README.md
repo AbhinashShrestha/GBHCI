@@ -12,14 +12,8 @@ conda install numpy
 
 pip install opencv-contrib-python
 
-conda install -c anaconda scikit-learn
 
-conda install -c anaconda scikit-image
-
-pip install imgaug //didn’t use
-
-python3 -m pip install tensorflow
-
+pip install tensorflow
 
 pip install chardet
 
