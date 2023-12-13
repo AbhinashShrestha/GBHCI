@@ -12,7 +12,7 @@ with open('class_names.json', 'r') as f:
     
 print(class_names)
 # Load the trained model
-model = load_model('Models/EV2L.h5')
+model = load_model('Models/EV2L_v2.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
