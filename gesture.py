@@ -8,20 +8,20 @@ import time
 import json
 
 # Load class_names
-with open('classes.json', 'r') as f:
+with open('class_names.json', 'r') as f:
     class_names = json.load(f)
     
 print(class_names)
 # Load the trained model
-model = load_model('Models/try_MultiModel_inception.h5')
+model = load_model('Models/EV2L.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.5)
 
-img_height = 224
-img_width= 224
+img_height = 380
+img_width= 380
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
