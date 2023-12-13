@@ -25,5 +25,7 @@ pip install efficientnet
 
 pip install mediapipe
 
+pip install pydot graphviz
+
 
 For the models and other dataset you know where to find then if not message me.
