@@ -34,7 +34,11 @@ pip install mediapipe
 pip install keyboard
 
 
-pip install pydot graphviz
+pip install pydot graphviz #this is used in colab to visualize the model architecture 
+
+
+
+pip install pynput
 
 pip install Pillow
 
