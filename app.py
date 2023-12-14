@@ -1,4 +1,3 @@
-from pynput import keyboard
 import pyautogui
 import os
 from datetime import datetime
@@ -53,6 +52,9 @@ def Screenshot():
     # Save the screenshot on the desktop
     im1.save(os.path.join(desktop, filename))
 
+    # Print a message
+    print("A screenshot was taken and saved on the desktop.")
+
 def Scroll():
     pass
 
@@ -65,35 +67,39 @@ def Volume_Decrease():
 def Volume_Increase():
     pass
 
-# Map keys to functions
-key_to_function = {
-    'a': Brightness_Decrease,
-    'b': Brightness_Increase,
-    'c': Chrome_Open,
-    'd': Cursor_Movement,
-    'e': Double_Click,
-    'f': Initiation,
-    'g': Left_Click,
-    'h': Neutral,
-    'i': Nothing,
-    'j': Right_Click,
-    'k': Screenshot,
-    'l': Scroll,
-    'm': Shutdown,
-    'n': Volume_Decrease,
-    'o': Volume_Increase
-}
+while True:
+    # Get the user input for the key
+    user_key = input("Please enter a key (or 'q' to quit): ")
 
-# Define the key listener
-def on_press(key):
-    try:
-        k = key.char  # single-char keys
-    except:
-        k = key.name  # other keys
-    if k in key_to_function:
-        # If the key is in the dictionary, call the corresponding function
-        key_to_functionk
-
-# Start the key listener
-with keyboard.Listener(on_press=on_press) as listener:
-    listener.join()
+    if user_key == 'q':
+        break
+    elif user_key == 'a':
+        Brightness_Decrease()
+    elif user_key == 'b':
+        Brightness_Increase()
+    elif user_key == 'c':
+        Chrome_Open()
+    elif user_key == 'd':
+        Cursor_Movement()
+    elif user_key == 'e':
+        Double_Click()
+    elif user_key == 'f':
+        Initiation()
+    elif user_key == 'g':
+        Left_Click()
+    elif user_key == 'h':
+        Neutral()
+    elif user_key == 'i':
+        Nothing()
+    elif user_key == 'j':
+        Right_Click()
+    elif user_key == 'k':
+        Screenshot()
+    elif user_key == 'l':
+        Scroll()
+    elif user_key == 'm':
+        Shutdown()
+    elif user_key == 'n':
+        Volume_Decrease()
+    elif user_key == 'o':
+        Volume_Increase()
