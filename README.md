@@ -18,12 +18,25 @@ pip install tensorflow
 pip install chardet
 
 conda install -c conda-forge tensorflow-datasets
+
 pip install pyparsing
+
+
 pip install efficientnet
+
+
 pip install pyobjc
+
+
 pip install mediapipe
+
+
 pip install keyboard
+
+
 pip install pydot graphviz
+
+pip install Pillow
 
 
 For the models and other dataset you know where to find then if not message me.
