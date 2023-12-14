@@ -7,17 +7,21 @@ import time
 import json
 
 # Load class_names
+#Keras’s image_dataset_from_directory function generates labels as integer indices that 
+# correspond to the alphabetical order of the class names. 
+# when we use np.argmax(predictions[0]) to get the predicted class index,
+# this index should correspond to the correct class name in the class_names list
 with open('class_names.json', 'r') as f:
     class_names = json.load(f)
     
 print(class_names)
 # Load the trained model
-model = load_model('Models/EV2L_v2.h5')
+model = load_model('Models/EV2L.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(static_image_mode=False, max_num_hands=1, min_detection_confidence=0.5)
+hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
 img_height = 380
 img_width= 380

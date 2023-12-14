@@ -17,6 +17,7 @@ classmates_test_images/
 
 # Ignore files with .pth extension
 *.pth
+*.keras
 
 #ignore 
 .DS_Store
