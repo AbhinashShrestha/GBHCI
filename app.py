@@ -69,7 +69,7 @@ def Volume_Increase():
 
 while True:
     # Get the user input for the key
-    user_key = input("Please enter a key (or 'q' to quit): ")
+    user_key = input("Please enter a key (or 'q' to quit):  ")
 
     if user_key == 'q':
         break
