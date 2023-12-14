@@ -38,8 +38,6 @@ pip install pydot graphviz #this is used in colab to visualize the model archite
 
 
 
-pip install pynput
-
 pip install Pillow
 
 
