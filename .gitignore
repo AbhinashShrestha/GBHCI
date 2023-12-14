@@ -11,7 +11,7 @@ Models
 Data
 # Ignore classmates_test_images
 classmates_test_images/
-
+Segmented_Dataset/
 # Ignore files with .h5 extension
 *.h5
 
