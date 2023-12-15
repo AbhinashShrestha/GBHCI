@@ -22,6 +22,7 @@ def Initiation():
     print("Initiated")
 
 def Left_Click():
+    pyautogui.click(button='left')  
     print("Left Clicked")
     
 def Neutral():
@@ -31,7 +32,7 @@ def Nothing():
     print("Nothing")
 
 def Right_Click():
-    pyautogui.click(button='right')  # right-click the mouse
+    pyautogui.click(button='right') 
     print("Right Clicked")
 
 def Screenshot():
