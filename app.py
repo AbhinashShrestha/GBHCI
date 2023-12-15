@@ -16,6 +16,7 @@ def Cursor_Movement():
     print("Cursor Moved")
 
 def Double_Click():
+    pyautogui.tripleClick()
     print("Double Clicked")
 
 def Initiation():
@@ -58,6 +59,7 @@ def Screenshot():
     print("A screenshot was taken and saved on the desktop.")
 
 def Scroll():
+    pyautogui.scroll(1) 
     print("Scrolled")
 
 def Shutdown():
