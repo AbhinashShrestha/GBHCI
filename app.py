@@ -4,34 +4,35 @@ from datetime import datetime
 
 # Define your functions here
 def Brightness_Decrease():
-    pass
+    print("Brightness Decreased")
 
 def Brightness_Increase():
-    pass
+    print("Brightness Increased")
 
 def Chrome_Open():
-    pass
+    print("Chrome Opened")
 
 def Cursor_Movement():
-    pass
+    print("Cursor Moved")
 
 def Double_Click():
-    pass
+    print("Double Clicked")
 
 def Initiation():
-    pass
+    print("Initiated")
 
 def Left_Click():
-    pass
-
+    print("Left Clicked")
+    
 def Neutral():
-    pass
+    print("Neutral")
 
 def Nothing():
-    pass
+    print("Nothing")
 
 def Right_Click():
-    pass
+    pyautogui.click(button='right')  # right-click the mouse
+    print("Right Clicked")
 
 def Screenshot():
     # Get the path to the desktop
@@ -56,16 +57,16 @@ def Screenshot():
     print("A screenshot was taken and saved on the desktop.")
 
 def Scroll():
-    pass
+    print("Scrolled")
 
 def Shutdown():
-    pass
+    print("Shutdown")
 
 def Volume_Decrease():
-    pass
+    print("Volume Decreased")
 
 def Volume_Increase():
-    pass
+    print("Volume Increased")
 
 while True:
     # Get the user input for the key
@@ -103,3 +104,6 @@ while True:
         Volume_Decrease()
     elif user_key == 'o':
         Volume_Increase()
+    
+    # Purge the user_key
+    user_key = None
