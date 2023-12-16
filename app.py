@@ -16,7 +16,7 @@ def Cursor_Movement():
     print("Cursor Moved")
 
 def Double_Click():
-    pyautogui.tripleClick()
+    pyautogui.click(clicks=3)
     print("Double Clicked")
 
 def Initiation():

@@ -5,7 +5,8 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import time
 import json
-from rembg import remove
+from model import LayerScale, StochasticDepth
+# from rembg import remove
 from PIL import Image
 import io
 import os
@@ -19,15 +20,20 @@ with open('class_names.json', 'r') as f:
     
 # print(class_names)
 # Load the trained model
-model = load_model('Models/EV2L.h5')
+# model = load_model('Models/ConvNeXt-XL.h5')
+# Use the LayerScale and StochasticDepth classes that we copied from keras official code
+best_model = load_model('Models/ConvNeXt-XL.h5', compile=False, 
+                        custom_objects={"LayerScale": LayerScale, "StochasticDepth": StochasticDepth})
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
-img_height = 380
-img_width= 380
+# img_height = 380
+# img_width= 380
+img_height = 384
+img_width= 384
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
@@ -92,7 +98,7 @@ while cap.isOpened():
                 img = np.expand_dims(img, axis=0)
 
                 # Use the model to predict the class
-                predictions = model.predict(img)
+                predictions = best_model.predict(img)
                 predicted_class = np.argmax(predictions[0])
                 confidence = np.max(predictions[0])
 
