@@ -43,7 +43,10 @@ pip install Pillow
 
 pip install pynput
 
+for the error OMP: Error #15: Initializing libomp.dylib, but found libiomp5.dylib already initialized.
 
+run the following command before executing the program
+export  KMP_DUPLICATE_LIB_OK=TRUE
 
 
 pip install rembg #used for background removal 
