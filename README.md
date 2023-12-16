@@ -51,6 +51,7 @@ export  KMP_DUPLICATE_LIB_OK=TRUE
 
 pip install rembg #used for background removal 
 
+pip install screen-brightness-control 
 
 
 For the models and other dataset you know where to find then if not message me.
