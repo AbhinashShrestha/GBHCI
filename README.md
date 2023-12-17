@@ -56,3 +56,25 @@ pip install screen-brightness-control
 
 
 For the models and other dataset you know where to find then if not message me.
+
+
+#How to create a python venv named "major_env"
+
+python3.11 -m venv major_env
+source major_env/bin/activate
+
+#for deactivating
+deactivate
+
+
+
+#After the environment is created start installing the following
+pip install opencv-python
+pip install numpy
+pip install matplotlib
+pip install Pillow
+pip install mediapipe
+pip install tensorflow
+pip install PyAutoGUI
+pip install screen-brightness-control
+pip install rembg
