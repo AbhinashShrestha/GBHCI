@@ -20,7 +20,7 @@ with open('class_names.json', 'r') as f:
     
 # print(class_names)
 # Load the trained model for efficientnet
-model = load_model('Models/V2M_alpha.h5')
+model = load_model('Models/EfficientNetV2S.h5')
 
 
 
@@ -34,8 +34,8 @@ mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
-img_height = 380
-img_width= 380
+img_height = 300
+img_width= 300
 # img_height = 384
 # img_width= 384 #for convexnet
 
@@ -87,37 +87,59 @@ while cap.isOpened():
                 y_max = min(1, y_max)
                 bbox = np.array([x_min * frame.shape[1], y_min * frame.shape[0], x_max * frame.shape[1], y_max * frame.shape[0]]).astype(int)
 
-                # Extract the hand image
-                hand_img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
-                # cv2.imshow('hand_img', hand_img)
-                # Extract the hand image
-                hand_img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
-                print(type(hand_img))
-                
-                
-                #save the image to a tmp folder
-                cv2.imwrite(f'{temp_input_dir_name}/hand_img_{img_count}.jpg', hand_img)
-                
-                input_hand = f'{temp_input_dir_name}/hand_img_{img_count}.jpg'
-                output_hand = f'{temp_output_dir_name}/hand_output_{img_count}.png'
 
-                input = Image.open(input_hand)
-                output = remove(input)
-                output.save(output_hand)
-                # Increment the img_counter
-                img_count+=1
+                # Extract the hand image
+                hand_img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
+                
+                
+                #below is rembg preprocessing
+
+                # Convert the OpenCV image (numpy.ndarray) to PIL.Image
+                # input_hand = Image.fromarray(cv2.cvtColor(hand_img, cv2.COLOR_BGR2RGB))
+
+                # Remove the background
+                # output = remove(np.array(input_hand))
+
+                # Convert the result back to numpy.ndarray for cv2 functions
+                # bg_removed_hand_img = cv2.cvtColor(np.array(output), cv2.COLOR_RGB2BGR)
+
+                # Preprocess the hand image
+                img = cv2.resize(hand_img, (img_height, img_width))
+                img = image.img_to_array(img)
+                # img = np.expand_dims(img, axis=0)
+                
+                #below code require un
+                # # Extract the hand image
+                # hand_img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
+                # # cv2.imshow('hand_img', hand_img)
+                # # Extract the hand image
+                # hand_img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
+                # print(type(hand_img))
+                
+                
+                # #save the image to a tmp folder
+                # cv2.imwrite(f'{temp_input_dir_name}/hand_img_{img_count}.jpg', hand_img)
+                
+                # input_hand = f'{temp_input_dir_name}/hand_img_{img_count}.jpg'
+                # output_hand = f'{temp_output_dir_name}/hand_output_{img_count}.png'
+
+                # input = Image.open(input_hand)
+                # output = remove(input)
+                # output.save(output_hand)
+                # # Increment the img_counter
+                # img_count+=1
          
                 
-                # Preprocess the hand image
-                bg_removed_hand_img = cv2.imread(output_hand)
-                # The cv2.resize function expects an image read by OpenCV (which is a NumPy array)
-                img = cv2.resize(bg_removed_hand_img, (img_height, img_width))
-                img = image.img_to_array(img)
+                # # Preprocess the hand image
+                # bg_removed_hand_img = cv2.imread(output_hand)
+                # # The cv2.resize function expects an image read by OpenCV (which is a NumPy array)
+                # img = cv2.resize(bg_removed_hand_img, (img_height, img_width))
+                # img = image.img_to_array(img)
                 img = np.expand_dims(img, axis=0)
 
                 # Use the model to predict the class
                 # predictions = best_model.predict(img) #for convexnet
-                predictions = model.predict(img)
+                predictions = model.predict(img) 
                 predicted_class = np.argmax(predictions[0])
                 confidence = np.max(predictions[0])
 

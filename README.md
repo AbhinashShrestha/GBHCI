@@ -39,15 +39,16 @@ pip install pydot graphviz #this is used in colab to visualize the model archite
 
 
 pip install Pillow
-
+pip install monitorcontrol
 
 pip install pynput
 
 for the error OMP: Error #15: Initializing libomp.dylib, but found libiomp5.dylib already initialized.
 
 run the following command before executing the program
-export  KMP_DUPLICATE_LIB_OK=TRUE
+export KMP_DUPLICATE_LIB_OK=TRUE
 
+deleted libomp.dylib file in the major env
 
 pip install rembg #used for background removal 
 

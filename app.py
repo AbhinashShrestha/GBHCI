@@ -1,13 +1,27 @@
 import pyautogui
 import os
 from datetime import datetime
-
+import screen_brightness_control as sbc
 # Define your functions here
-def Brightness_Decrease():
+import monitorcontrol
+
+
+def Brightness_Increase(increase_value):
+    monitors = monitorcontrol.get_monitors()
+    for monitor in monitors:
+        with monitor:
+            current_luminance = monitor.get_luminance()
+            monitor.set_luminance(current_luminance + increase_value)
+    print("Brightness Increased")
+
+def Brightness_Decrease(decrease_value):
+    monitors = monitorcontrol.get_monitors()
+    for monitor in monitors:
+        with monitor:
+            current_luminance = monitor.get_luminance()
+            monitor.set_luminance(current_luminance - decrease_value)
     print("Brightness Decreased")
 
-def Brightness_Increase():
-    print("Brightness Increased")
 
 def Chrome_Open():
     print("Chrome Opened")
@@ -78,9 +92,9 @@ while True:
     if user_key == 'q':
         break
     elif user_key == 'a':
-        Brightness_Decrease()
+        Brightness_Decrease(10)
     elif user_key == 'b':
-        Brightness_Increase()
+        Brightness_Increase(10)
     elif user_key == 'c':
         Chrome_Open()
     elif user_key == 'd':
