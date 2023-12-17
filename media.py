@@ -1,16 +1,29 @@
+#the code below is a version with less preprocessing of gesture.py
+
 import cv2
 import mediapipe as mp
 import os
-
+import json
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+import numpy as np
 # Initialize MediaPipe Hands.
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
 # Initialize MediaPipe DrawingUtils.
 mp_drawing = mp.solutions.drawing_utils
-
+img_height = 380
+img_width= 380
 # OpenCV VideoCapture.
 cap = cv2.VideoCapture(0)
+
+with open('class_names.json', 'r') as f:
+    class_names = json.load(f)
+    
+
+# Load the trained model for efficientnet
+model = load_model('Models/V2M_alpha.h5')
 
 # Create the directory if it doesn't exist.
 if not os.path.exists('test_a'):
@@ -53,12 +66,26 @@ while cap.isOpened():
             # Draw the bounding box.
             cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
 
-            # Capture the image within the bounding box.
+           # Capture the image within the bounding box.
             captured_image = frame[y_min:y_max, x_min:x_max]
 
-            # Save the captured image.
-            cv2.imwrite(f'test_a/captured_{img_counter}.png', captured_image)
-            img_counter += 1
+            # Resize the captured image.
+            resized_image = cv2.resize(captured_image, (img_height, img_width))
+
+            # Convert the image to array.
+            img = image.img_to_array(resized_image)
+
+            # Expand the dimensions of the image.
+            img = np.expand_dims(img, axis=0)
+
+            # Use the model to predict the class.
+            predictions = model.predict(img) 
+            predicted_class = np.argmax(predictions[0])
+            confidence = np.max(predictions[0])
+
+            # Print the class name and confidence.
+            print('The predicted class is:', class_names[predicted_class])
+            print('Confidence:', confidence)
 
     # Display the resulting frame.
     cv2.imshow('MediaPipe Hands', frame)
