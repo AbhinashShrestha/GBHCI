@@ -21,4 +21,6 @@ Segmented_Dataset/
 
 #ignore 
 .DS_Store
+/_pycache_/
+
 
