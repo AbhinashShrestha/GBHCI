@@ -9,6 +9,7 @@ asl_dataset
 asl
 Models
 Data
+major_env
 # Ignore classmates_test_images
 classmates_test_images/
 Segmented_Dataset/
@@ -21,6 +22,6 @@ Segmented_Dataset/
 
 #ignore 
 .DS_Store
-/_pycache_/
+__pycache__/
 
 
