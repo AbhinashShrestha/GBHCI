@@ -55,23 +55,37 @@ def Right_Click():
     print("Right Clicked")
 
 def Screenshot():
-    # Get the path to the desktop
-    desktop = os.path.join(os.path.expanduser("~"), "Desktop")
-
-    # Get the current date and time
+    #for mac os
+  # Get the current date and time
     now = datetime.now()
+    # Format the date and time string to be used in the filename
+    dt_string = now.strftime("Screen Shot %Y-%m-%d at %I.%M.%S %p")
+    # Get the path to the desktop
+    desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+    # Define the command
+    command = ['screencapture', os.path.join(desktop_path, f'{dt_string}.png')]
+    # Run the command
+    subprocess.run(command)
+    
+    
+    #for windows
+    # # Get the path to the desktop
+    # desktop = os.path.join(os.path.expanduser("~"), "Desktop")
 
-    # Format the date and time as a string
-    now_str = now.strftime("%Y-%m-%d_%H-%M-%S")
+    # # Get the current date and time
+    # now = datetime.now()
 
-    # Create the filename
-    filename = f"screenshot_{now_str}.png"
+    # # Format the date and time as a string
+    # now_str = now.strftime("%Y-%m-%d_%H-%M-%S")
 
-    # Take a screenshot
-    im1 = pyautogui.screenshot()
+    # # Create the filename
+    # filename = f"screenshot_{now_str}.png"
 
-    # Save the screenshot on the desktop
-    im1.save(os.path.join(desktop, filename))
+    # # Take a screenshot
+    # im1 = pyautogui.screenshot()
+
+    # # Save the screenshot on the desktop
+    # im1.save(os.path.join(desktop, filename))
 
     # Print a message
     print("A screenshot was taken and saved on the desktop.")
