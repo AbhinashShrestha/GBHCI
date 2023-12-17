@@ -17,6 +17,8 @@ def Brightness_Increase():
     print("Brightness Increased")
 
 def Brightness_Decrease(decrease_value):
+    command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 145', '-e', 'end tell']
+    subprocess.run(command)
     # monitors = monitorcontrol.get_monitors()
     # for monitor in monitors:
     #     with monitor:
