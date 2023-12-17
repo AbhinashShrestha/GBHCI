@@ -1,25 +1,27 @@
 import pyautogui
 import os
 from datetime import datetime
-import screen_brightness_control as sbc
+# import screen_brightness_control as sbc
 # Define your functions here
-import monitorcontrol
-
-
-def Brightness_Increase(increase_value):
-    monitors = monitorcontrol.get_monitors()
-    for monitor in monitors:
-        with monitor:
-            current_luminance = monitor.get_luminance()
-            monitor.set_luminance(current_luminance + increase_value)
+import subprocess
+def Brightness_Increase():
+    #for mac
+    command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 144', '-e', 'end tell']
+    subprocess.run(command)
+    #for windows
+    # monitors = monitorcontrol.get_monitors()
+    # for monitor in monitors:
+    #     with monitor:
+    #         current_luminance = monitor.get_luminance()
+    #         monitor.set_luminance(current_luminance + increase_value)
     print("Brightness Increased")
 
 def Brightness_Decrease(decrease_value):
-    monitors = monitorcontrol.get_monitors()
-    for monitor in monitors:
-        with monitor:
-            current_luminance = monitor.get_luminance()
-            monitor.set_luminance(current_luminance - decrease_value)
+    # monitors = monitorcontrol.get_monitors()
+    # for monitor in monitors:
+    #     with monitor:
+    #         current_luminance = monitor.get_luminance()
+    #         monitor.set_luminance(current_luminance - decrease_value)
     print("Brightness Decreased")
 
 
@@ -92,9 +94,9 @@ while True:
     if user_key == 'q':
         break
     elif user_key == 'a':
-        Brightness_Decrease(10)
+        Brightness_Decrease()
     elif user_key == 'b':
-        Brightness_Increase(10)
+        Brightness_Increase()
     elif user_key == 'c':
         Chrome_Open()
     elif user_key == 'd':
@@ -124,3 +126,4 @@ while True:
     
     # Purge the user_key
     user_key = None
+
