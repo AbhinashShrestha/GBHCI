@@ -16,7 +16,6 @@ pip install Pillow
 pip install mediapipe
 pip install tensorflow
 pip install PyAutoGUI
-pip install screen-brightness-control
 pip install rembg
 
 for the error OMP: Error #15: Initializing libomp.dylib, but found libiomp5.dylib already initialized.
