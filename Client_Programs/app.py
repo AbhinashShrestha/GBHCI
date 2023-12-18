@@ -34,7 +34,7 @@ def Cursor_Movement():
     print("Cursor Moved")
 
 def Double_Click():
-    pyautogui.click(clicks=3)
+    pyautogui.click(clicks=2, interval=0)
     print("Double Clicked")
 
 def Initiation():
@@ -97,12 +97,17 @@ def Scroll():
 def Shutdown():
     print("Shutdown")
 
-def Volume_Decrease():
-    print("Volume Decreased")
-
 def Volume_Increase():
+    # Increase volume
+    subprocess.call(["osascript", "-e", "set volume output volume (output volume of (get volume settings) + 10)"])
     print("Volume Increased")
 
+def Volume_Decrease():
+    # Decrease volume
+    subprocess.call(["osascript", "-e", "set volume output volume (output volume of (get volume settings) - 10)"])
+    print("Volume Decreased")
+    
+    
 while True:
     # Get the user input for the key
     user_key = input("Please enter a key (or 'q' to quit):  ")
