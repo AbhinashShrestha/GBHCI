@@ -42,6 +42,15 @@ pip install PyAutoGUI
 
 pip install rembg
 
+
+
+pip install keyboard
+
+
+
+brew install cliclick
+
+
 for the error OMP: Error #15: Initializing libomp.dylib, but found libiomp5.dylib already initialized.
 
 run the following command before executing the program
