@@ -141,6 +141,6 @@ class ActionHandler:
         
         
 # Example usage:
-predicted_class = "Volume_Increase"  # Replace this with the actual predicted class
+predicted_class = "Screenshot"  # Replace this with the actual predicted class
 handler = ActionHandler(predicted_class)
 handler.execute_action()
