@@ -19,6 +19,7 @@ Segmented_Dataset/
 # Ignore files with .pth extension
 *.pth
 *.keras
+*.log
 
 #ignore 
 .DS_Store
