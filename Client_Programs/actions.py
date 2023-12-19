@@ -2,145 +2,194 @@ import pyautogui
 import os
 from datetime import datetime
 import subprocess
-import keyboard
+import logging
+
+
 class ActionHandler:
     def __init__(self, predicted_class):
         self.predicted_class = predicted_class
+        self.logger = self.setup_logger()
+    
+    def setup_logger(self):
+        logger = logging.getLogger(__name__)
+        logger.setLevel(logging.INFO)
+        # Create a file handler and set the formatter
+        log_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "action_handler.log")
+        file_handler = logging.FileHandler(log_file)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+        return logger
 
     def execute_action(self):
-        if self.predicted_class == "Brightness_Increase":
-            self.Brightness_Increase()
-        elif self.predicted_class == "Brightness_Decrease":
-            self.Brightness_Decrease()
-        elif self.predicted_class == "Chrome_Open":
-            self.Chrome_Open()
-        elif self.predicted_class == "Cursor_Movement":
-            self.Cursor_Movement()
-        elif self.predicted_class == "Double_Click":
-            self.Double_Click()
-        elif self.predicted_class == "Initiation":
-            self.Initiation()
-        elif self.predicted_class == "Left_Click":
-            self.Left_Click()
-        elif self.predicted_class == "Neutral":
-            self.Neutral()
-        elif self.predicted_class == "Nothing":
-            self.Nothing()
-        elif self.predicted_class == "Right_Click":
-            self.Right_Click()
-        elif self.predicted_class == "Screenshot":
-            self.Screenshot()
-        elif self.predicted_class == "Scroll":
-            self.Scroll()
-        elif self.predicted_class == "Shutdown":
-            self.Shutdown()
-        elif self.predicted_class == "Volume_Increase":
-            self.Volume_Increase()
-        elif self.predicted_class == "Volume_Decrease":
-            self.Volume_Decrease()
-        else:
-            print("Invalid predicted class")
+        try:
+            if self.predicted_class == "Brightness_Increase":
+                self.Brightness_Increase()
+            elif self.predicted_class == "Brightness_Decrease":
+                self.Brightness_Decrease()
+            elif self.predicted_class == "Chrome_Open":
+                self.Chrome_Open()
+            elif self.predicted_class == "Cursor_Movement":
+                self.Cursor_Movement()
+            elif self.predicted_class == "Double_Click":
+                self.Double_Click()
+            elif self.predicted_class == "Initiation":
+                self.Initiation()
+            elif self.predicted_class == "Left_Click":
+                self.Left_Click()
+            elif self.predicted_class == "Neutral":
+                self.Neutral()
+            elif self.predicted_class == "Nothing":
+                self.Nothing()
+            elif self.predicted_class == "Right_Click":
+                self.Right_Click()
+            elif self.predicted_class == "Screenshot":
+                self.Screenshot()
+            elif self.predicted_class == "Scroll":
+                self.Scroll()
+            elif self.predicted_class == "Shutdown":
+                self.Shutdown()
+            elif self.predicted_class == "Volume_Increase":
+                self.Volume_Increase()
+            elif self.predicted_class == "Volume_Decrease":
+                self.Volume_Decrease()
+            else:
+                self.logger.warning("Invalid predicted class: %s", self.predicted_class)
+        except Exception as e:
+            self.logger.error("Error executing action: %s", e)
+            print("An error occurred while executing the action.")
+
 
     def Brightness_Increase(self):
-        #for mac
-        command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 144', '-e', 'end tell']
-        subprocess.run(command)
-        print("Brightness Increased")
+        try:
+            #for mac
+            command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 144', '-e', 'end tell']
+            subprocess.run(command)
+            self.logger.info("Brightness Increased")
+        except Exception as e:
+            self.logger.error("Error increasing brightness: %s", e)
 
     def Brightness_Decrease(self):
-        command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 145', '-e', 'end tell']
-        subprocess.run(command)
-        print("Brightness Decreased")
-
+        try:
+            command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 145', '-e', 'end tell']
+            subprocess.run(command)
+            self.logger.info("Brightness Decreased")
+        except Exception as e:
+            self.logger.error("Error decreasing brightness: %s", e)
 
     def Chrome_Open(self):
-        print("Chrome Opened")
+        subprocess.run(["open", "-a", "Google Chrome"])
+        self.logger.info("Chrome Opened")
 
     def Cursor_Movement(self):
-        print("Cursor Moved")
+        self.logger.info("Cursor Moved")
 
     def Double_Click(self):
-        pyautogui.click(clicks=2, interval=0)
-        print("Double Clicked")
+        try:
+            # pyautogui.click(clicks=2, interval=0)
+            command = 'cliclick tc:.'
+            process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+            self.logger.info("Double Clicked")
+        except Exception as e:
+            self.logger.error("Error performing double click: %s", e)
 
     def Initiation(self):
-        print("Initiated")
+        self.logger.info("Initiated")
 
     def Left_Click(self):
-        pyautogui.click(button='left')  
-        print("Left Clicked")
+        try:
+            pyautogui.click(button='left')
+            self.logger.info("Left Clicked")
+        except Exception as e:
+            self.logger.error("Error performing left click: %s", e)
         
     def Neutral(self):
-        print("Neutral")
+        self.logger.info("Neutral")
 
     def Nothing(self):
-        print("Nothing")
+       self.logger.info("Nothing")
 
     def Right_Click(self):
-        pyautogui.click(button='right') 
-        print("Right Clicked")
+        try:
+            pyautogui.click(button='right')
+            self.logger.info("Right Clicked")
+        except Exception as e:
+            self.logger.error("Error performing right click: %s", e)
 
     def Screenshot(self):
-        #for mac os
-        # Get the current date and time
-        now = datetime.now()
-        # Format the date and time string to be used in the filename
-        dt_string = now.strftime("Screen Shot %Y-%m-%d at %I.%M.%S %p")
-        # Get the path to the desktop
-        desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
-        # Define the command
-        command = ['screencapture', os.path.join(desktop_path, f'{dt_string}.png')]
-        # Run the command
-        subprocess.run(command)
-        
-        #for windows
-        # # Get the path to the desktop
-        # desktop = os.path.join(os.path.expanduser("~"), "Desktop")
+        try:
+            #for mac os
+            # Get the current date and time
+            now = datetime.now()
+            # Format the date and time string to be used in the filename
+            dt_string = now.strftime("Screen Shot %Y-%m-%d at %I.%M.%S %p")
+            # Get the path to the desktop
+            desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+            # Define the command
+            command = ['screencapture', os.path.join(desktop_path, f'{dt_string}.png')]
+            # Run the command
+            subprocess.run(command)
+            
+            #for windows
+            # # Get the path to the desktop
+            # desktop = os.path.join(os.path.expanduser("~"), "Desktop")
 
-        # # Get the current date and time
-        # now = datetime.now()
+            # # Get the current date and time
+            # now = datetime.now()
 
-        # # Format the date and time as a string
-        # now_str = now.strftime("%Y-%m-%d_%H-%M-%S")
+            # # Format the date and time as a string
+            # now_str = now.strftime("%Y-%m-%d_%H-%M-%S")
 
-        # # Create the filename
-        # filename = f"screenshot_{now_str}.png"
+            # # Create the filename
+            # filename = f"screenshot_{now_str}.png"
 
-        # # Take a screenshot
-        # im1 = pyautogui.screenshot()
+            # # Take a screenshot
+            # im1 = pyautogui.screenshot()
 
-        # # Save the screenshot on the desktop
-        # im1.save(os.path.join(desktop, filename))
-
-        # Print a message
-        print("A screenshot was taken and saved on the desktop.")
+            # # Save the screenshot on the desktop
+            # im1.save(os.path.join(desktop, filename))
+            self.logger.info("Screenshot taken and saved on the desktop.")
+        except Exception as e:
+            self.logger.error("Error taking screenshot: %s", e)
+            print("An error occurred while taking a screenshot.")
 
     def Scroll(self):
-        pyautogui.scroll(1) 
-        print("Scrolled")
+        try:
+            pyautogui.scroll(1)
+            self.logger.info("Scrolled")
+        except Exception as e:
+            self.logger.error("Error scrolling: %s", e)
 
     def Shutdown(self):
-        print("Shutdown")
+        os.system("sudo -S shutdown -h now")
+        self.logger.info("Shutdown")
 
     def Volume_Increase(self):
-        #require cliclick to be installed
-        subprocess.call(["cliclick", "kp:volume-up", "kp:volume-up"]) #volume increase by two clicks
-        # Increase volume
-        #native function for mac only
-        # subprocess.call(["osascript", "-e", "set volume output volume (output volume of (get volume settings) + 10)"])
-        # print("Volume Increased")
+        try:
+            #require cliclick to be installed
+            subprocess.call(["cliclick", "kp:volume-up", "kp:volume-up"]) #volume increase by two clicks
+            # Increase volume
+            #native function for mac only
+            # subprocess.call(["osascript", "-e", "set volume output volume (output volume of (get volume settings) + 10)"])
+            self.logger.info("Volume Increased")
+        except Exception as e:
+            self.logger.error("Error increasing volume: %s", e)
+
 
     def Volume_Decrease(self):
-        # Decrease volume
-        #require cliclick to be installed
-        subprocess.call(["cliclick", "kp:volume-down", "kp:volume-down"]) #volume decrease by two clicks
-        
-        #native function for mac only
-        # subprocess.call(["osascript", "-e", "set volume output volume (output volume of (get volume settings) - 10)"])
-        # print("Volume Decreased")
+        try:
+            # Decrease volume
+            #require cliclick to be installed
+            subprocess.call(["cliclick", "kp:volume-down", "kp:volume-down"]) #volume decrease by two clicks
+            
+            #native function for mac only
+            # subprocess.call(["osascript", "-e", "set volume output volume (output volume of (get volume settings) - 10)"])
+            # print("Volume Decreased")
+        except Exception as e:
+            self.logger.error("Error decreasing volume: %s", e)
         
         
 # Example usage:
-predicted_class = "Screenshot"  # Replace this with the actual predicted class
+predicted_class = "Shutdown"  # Replace this with the actual predicted class
 handler = ActionHandler(predicted_class)
 handler.execute_action()
