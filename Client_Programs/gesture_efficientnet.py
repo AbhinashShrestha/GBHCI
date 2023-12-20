@@ -5,61 +5,53 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import time
 import json
-from model import LayerScale, StochasticDepth #for convexnet
 from rembg import remove
 from PIL import Image
 import io
 import os
+from actions import *
+import time
+# Initialize a variable to hold the time of the last detection
+last_detection_time = None
+
+skip_frames = 10
 # Load class_names
 #Keras’s image_dataset_from_directory function generates labels as integer indices that 
 # correspond to the alphabetical order of the class names. 
 # when we use np.argmax(predictions[0]) to get the predicted class index,
 # this index should correspond to the correct class name in the class_names list
-with open('../class/class_names.json', 'r') as f:
-    class_names = json.load(f)
+# with open('../class/class_names.json', 'r') as f:
+class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cursor_Movement", "Double_Click", "Initiation", "Left_Click", "Neutral", "Nothing", "Right_Click", "Screenshot", "Scroll", "Shutdown", "Volume_Decrease", "Volume_Increase"]
     
 # print(class_names)
 # Load the trained model for efficientnet
-# model = load_model('Models/convnext_base.h5')
+model = load_model('../Models/V2M_alpha.h5')
 
-
-
-# for convexnet
-# Use the LayerScale and StochasticDepth classes that we copied from keras official code
-best_model = load_model('../Models/convnext_base_un_bg_removed.h5', compile=False, 
-                        custom_objects={"LayerScale": LayerScale, "StochasticDepth": StochasticDepth})
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
-img_height = 224
-img_width= 224 #for convexnet
-
-# img_height = 300 #for efficientnetv2s
-# img_width= 300
-# img_height = 384
-# img_width= 384 #for convexnet
+img_height = 380
+img_width= 380
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
 
 # Initialize frame counter
 frame_counter = 0
-# Set the number of frames to skip
-skip_frames = 10  # Change this value to process more or fewer frames
 img_count=1
 bbox = None
 predicted_class = None
 
-# Create a directory if it doesn't exist
-temp_input_dir_name = 'tmp'
-if not os.path.exists(temp_input_dir_name):
-    os.makedirs(temp_input_dir_name)
-temp_output_dir_name = 'output'
-if not os.path.exists(temp_output_dir_name):
-    os.makedirs(temp_output_dir_name)
+#the following directory is for rembg processing
+# temp_input_dir_name = 'tmp'
+# if not os.path.exists(temp_input_dir_name):
+#     os.makedirs(temp_input_dir_name)
+# temp_output_dir_name = 'output'
+# if not os.path.exists(temp_output_dir_name):
+#     os.makedirs(temp_output_dir_name)
 
 while cap.isOpened():
     success, frame = cap.read()
@@ -93,7 +85,12 @@ while cap.isOpened():
 
                 # Extract the hand image
                 hand_img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
-                
+                # Preprocess the hand image
+                img = cv2.resize(hand_img, (img_height, img_width))
+                img = image.img_to_array(img)
+                # Normalize the image to the range [0, 1]
+                # img = img / 255.
+                img = np.expand_dims(img, axis=0)
                 
                 #below is rembg preprocessing
 
@@ -105,26 +102,7 @@ while cap.isOpened():
 
                 # Convert the result back to numpy.ndarray for cv2 functions
                 # bg_removed_hand_img = cv2.cvtColor(np.array(output), cv2.COLOR_RGB2BGR)
-
-                # Preprocess the hand image
-                img = cv2.resize(hand_img, (img_height, img_width))
-                img = image.img_to_array(img)
                 # img = np.expand_dims(img, axis=0)
-                
-                #below code require un
-                # # Extract the hand image
-                # hand_img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
-                # # cv2.imshow('hand_img', hand_img)
-                # # Extract the hand image
-                # hand_img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
-                # print(type(hand_img))
-                
-                
-                # #save the image to a tmp folder
-                # cv2.imwrite(f'{temp_input_dir_name}/hand_img_{img_count}.jpg', hand_img)
-                
-                # input_hand = f'{temp_input_dir_name}/hand_img_{img_count}.jpg'
-                # output_hand = f'{temp_output_dir_name}/hand_output_{img_count}.png'
 
                 # input = Image.open(input_hand)
                 # output = remove(input)
@@ -135,16 +113,17 @@ while cap.isOpened():
                 
                 # # Preprocess the hand image
                 # bg_removed_hand_img = cv2.imread(output_hand)
-                # # The cv2.resize function expects an image read by OpenCV (which is a NumPy array)
+                # The cv2.resize function expects an image read by OpenCV (which is a NumPy array)
                 # img = cv2.resize(bg_removed_hand_img, (img_height, img_width))
                 # img = image.img_to_array(img)
-                img = np.expand_dims(img, axis=0)
+                # img = np.expand_dims(img, axis=0)
 
                 # Use the model to predict the class
-                predictions = best_model.predict(img) #for convexnet
-                # predictions = model.predict(img) 
+                predictions = model.predict(img) 
                 predicted_class = np.argmax(predictions[0])
                 confidence = np.max(predictions[0])
+                handler = ActionHandler(class_names[predicted_class])
+                handler.execute_action()
 
                 # Print the class name and confidence
                 print('The predicted class is:', class_names[predicted_class])
@@ -168,6 +147,3 @@ while cap.isOpened():
 
 cap.release()
 cv2.destroyAllWindows()
-
-os.rmdir(temp_input_dir_name)
-os.rmdir(temp_output_dir_name)
