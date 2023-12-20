@@ -4,7 +4,6 @@ from datetime import datetime
 import subprocess
 import logging
 
-
 class ActionHandler:
     def __init__(self, predicted_class):
         self.predicted_class = predicted_class
@@ -23,6 +22,7 @@ class ActionHandler:
 
     def execute_action(self):
         try:
+            print(f"Predicted class: {self.predicted_class}")
             if self.predicted_class == "Brightness_Increase":
                 self.Brightness_Increase()
             elif self.predicted_class == "Brightness_Decrease":
@@ -53,6 +53,10 @@ class ActionHandler:
                 self.Volume_Increase()
             elif self.predicted_class == "Volume_Decrease":
                 self.Volume_Decrease()
+            elif self.predicted_class == "Play":
+                self.Play()
+            elif self.predicted_class == "Pause":
+                self.Pause()
             else:
                 self.logger.warning("Invalid predicted class: %s", self.predicted_class)
         except Exception as e:
@@ -182,14 +186,22 @@ class ActionHandler:
             #require cliclick to be installed
             subprocess.call(["cliclick", "kp:volume-down", "kp:volume-down"]) #volume decrease by two clicks
             
-            #native function for mac only
+            #native function for mac only it wont show the volume change indicator
             # subprocess.call(["osascript", "-e", "set volume output volume (output volume of (get volume settings) - 10)"])
             # print("Volume Decreased")
         except Exception as e:
             self.logger.error("Error decreasing volume: %s", e)
+    
+    
+    def Play(self):
+        pass
+    
+    
+    def Pause(self):
+        pass
         
         
 # Example usage:
-predicted_class = "Shutdown"  # Replace this with the actual predicted class
-handler = ActionHandler(predicted_class)
-handler.execute_action()
+# predicted_class = "Volume_Decrease"  # Replace this with the actual predicted class
+# handler = ActionHandler(predicted_class)
+# handler.execute_action()
