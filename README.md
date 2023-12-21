@@ -51,7 +51,11 @@ pip install keyboard
 brew install cliclick
 
 
+pip install ultralytics
+
 for the error OMP: Error #15: Initializing libomp.dylib, but found libiomp5.dylib already initialized.
+
+pip install supervision
 
 run the following command before executing the program
 export KMP_DUPLICATE_LIB_OK=TRUE
