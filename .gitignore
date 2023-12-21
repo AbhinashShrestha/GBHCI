@@ -13,6 +13,7 @@ major_env
 # Ignore classmates_test_images
 classmates_test_images/
 Segmented_Dataset/
+runs/
 # Ignore files with .h5 extension
 *.h5
 
@@ -20,6 +21,7 @@ Segmented_Dataset/
 *.pth
 *.keras
 *.log
+*.zip
 
 #ignore 
 .DS_Store
