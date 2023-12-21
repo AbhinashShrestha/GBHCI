@@ -5,10 +5,10 @@ import os
 current_directory = os.path.dirname(os.path.abspath(__file__))
 
 # Create the directory path for saving images inside the "Dataset" folder
-dataset_directory = os.path.join(current_directory, "Dataset")
+dataset_directory = "../Data/Dataset_alpha"
 
 # Manually change the subdirectory name here
-subdirectory_name = "Chrome_Open"
+subdirectory_name = "Play"
 
 # Create the subdirectory if it doesn't exist
 directory_name = os.path.join(dataset_directory, subdirectory_name)
@@ -19,7 +19,7 @@ if not os.path.exists(directory_name):
 cap = cv2.VideoCapture(0)
 
 # Define the aspect ratio
-aspect_ratio = 2 / 3
+aspect_ratio = 3/4
 
 while True:
     ret, frame = cap.read()
@@ -36,7 +36,7 @@ while True:
 
         key = cv2.waitKey(1)
 
-        if key == ord("w"):
+        if key == ord("c"):
             # Check if the "Dataset" directory exists
             if not os.path.exists(dataset_directory):
                 os.makedirs(dataset_directory)
@@ -46,11 +46,11 @@ while True:
                 os.makedirs(directory_name)
 
             image_count = len(os.listdir(directory_name))
-            image_name = os.path.join(directory_name, f"image_{image_count + 1}.jpg")
+            image_name = os.path.join(directory_name, f"{subdirectory_name.lower()}_{image_count + 1}.jpg")
             cv2.imwrite(image_name, cropped_frame)
             print(f"Captured image: {image_name}")
 
-        elif key == ord("q"):
+        elif key == 27:
             break
 
 cap.release()
