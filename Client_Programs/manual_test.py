@@ -4,16 +4,15 @@ import numpy as np
 import os
 
 # Assuming your data directory is organized with one subdirectory per class
-data_dir = "Dataset_alpha"
-class_names = sorted(os.listdir(data_dir))
+class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cursor_Movement", "Double_Click", "Initiation", "Left_Click", "Neutral", "Nothing", "Right_Click", "Screenshot", "Scroll", "Shutdown", "Volume_Decrease", "Volume_Increase"]
 
 
 # Load the trained model
-model = load_model('Models/MultiModel.h5')
-img_height = 224
-img_width=224
+model = load_model('../Models/V2M_alpha.h5')
+img_height = 380
+img_width= 380
 # Load the image
-img_path = 'classmates_test_images/fista.jpg'  # replace with the path to your image
+img_path = '../classmates_test_images/aadit.jpg'  # replace with the path to your image
 img = image.load_img(img_path, target_size=(img_height, img_width))
 
 # Preprocess the image
