@@ -18,9 +18,7 @@ img_width= 380
 # OpenCV VideoCapture.
 cap = cv2.VideoCapture(0)
 
-with open('../class/class_names.json', 'r') as f:
-    class_names = json.load(f)
-    
+
 
 # Load the trained model for efficientnet
 model = load_model('../Models/V2M_alpha.h5')
@@ -64,29 +62,22 @@ while cap.isOpened():
             y_max = min(frame.shape[0], y_max + padding)
 
             # Draw the bounding box.
+            # For the text background
+            # Finds space required by the text so that we can put a background with that amount of width.
+            (w, h), _ = cv2.getTextSize(
+                    "label", cv2.FONT_HERSHEY_SIMPLEX, 0.6, 1)
+
+            # Prints the text.    
+            img = cv2.rectangle(frame, (x_min, y_min - 20), (x_min + w, y_min), (0,0,0), -1)
+            img = cv2.putText(frame, "label", (x_min, y_min - 5),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0,0,0), 1)
+
+            # For printing text
+            img = cv2.putText(frame, 'test', (x_min, y_min),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255,255,255), 1)
             cv2.rectangle(frame, (x_min, y_min), (x_max, y_max), (0, 255, 0), 2)
 
-           # Capture the image within the bounding box.
-            captured_image = frame[y_min:y_max, x_min:x_max]
-
-            # Resize the captured image.
-            resized_image = cv2.resize(captured_image, (img_height, img_width))
-
-            # Convert the image to array.
-            img = image.img_to_array(resized_image)
-
-            # Expand the dimensions of the image.
-            img = np.expand_dims(img, axis=0)
-
-            # Use the model to predict the class.
-            predictions = model.predict(img) 
-            predicted_class = np.argmax(predictions[0])
-            confidence = np.max(predictions[0])
-
-            # Print the class name and confidence.
-            print('The predicted class is:', class_names[predicted_class])
-            print('Confidence:', confidence)
-
+    
     # Display the resulting frame.
     cv2.imshow('MediaPipe Hands', frame)
 
