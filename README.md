@@ -1,9 +1,9 @@
-# Gesture Detection Application
+# Gesture Based Human Computer Interaction
 
-### Note: [Python >= 3.10.0](https://www.python.org/downloads/) required
+### Note: [Python >= 3.11.0 < 3.12](https://www.python.org/downloads/) required 
 - Create a python virtual environment
 ```bash 
-python -m venv <env_name>
+python3.11 -m venv major_env
 ```
 - Activate python virtual environment in linux/mac
 ```bash 
@@ -26,16 +26,14 @@ pip install opencv-python numpy matplotlib
             Pillow mediapipe
             tensorflow
             PyAutoGUI
-            rembg keyboard
+            rembg 
             ultralytics supervision
 ```
 
-<!--Run the following command before executing the program
-
+for the error OMP: Error #15: Initializing `libomp.dylib`, but found `libiomp5.dylib` already initialized
+run the below command before any python program
 export `KMP_DUPLICATE_LIB_OK=TRUE`
-deleted `libomp.dylib` file in the major env
-
-for the error OMP: Error #15: Initializing `libomp.dylib`, but found `libiomp5.dylib` already initialized.-->
+and if that doesn't work delete `libomp.dylib` file in the env
 
 
 
