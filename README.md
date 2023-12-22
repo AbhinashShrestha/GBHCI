@@ -31,8 +31,16 @@ pip install opencv-python numpy matplotlib
 ```
 
 for the error OMP: Error #15: Initializing `libomp.dylib`, but found `libiomp5.dylib` already initialized
+
+
+
 run the below command before any python program
+
+
 export `KMP_DUPLICATE_LIB_OK=TRUE`
+
+
+
 and if that doesn't work delete `libomp.dylib` file in the env
 
 
