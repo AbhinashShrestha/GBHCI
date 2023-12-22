@@ -1,63 +1,42 @@
-#How to create a python venv named "major_env"
+# Gesture Detection Application
 
-python3.11 -m venv major_env
-source major_env/bin/activate
-
-#for deactivating
+### Note: [Python >= 3.10.0](https://www.python.org/downloads/) required
+- Create a python virtual environment
+```bash 
+python -m venv <env_name>
+```
+- Activate python virtual environment in linux/mac
+```bash 
+source <env_name>/bin/activate
+```
+- Activate python virtual environment in windows
+```bash 
+cd <env_name>/scripts/
+activate
+``` 
+- Deactivate python virtual environment
+```bash 
 deactivate
+```
 
+### Dependencies
+To install the required Python packages you can use the following command:
+```bash 
+pip install opencv-python numpy matplotlib
+            Pillow mediapipe
+            tensorflow
+            PyAutoGUI
+            rembg keyboard
+            ultralytics supervision
+```
 
+<!--Run the following command before executing the program
 
-#After the environment is created start installing the following
-pip install opencv-python
+export `KMP_DUPLICATE_LIB_OK=TRUE`
+deleted `libomp.dylib` file in the major env
 
-
-
-pip install numpy
-
-
-
-pip install matplotlib
-
-
-
-pip install Pillow
-
-
-
-
-pip install mediapipe
-
-
-
-
-pip install tensorflow
+for the error OMP: Error #15: Initializing `libomp.dylib`, but found `libiomp5.dylib` already initialized.-->
 
 
 
 
-pip install PyAutoGUI
-
-
-
-pip install rembg
-
-
-
-pip install keyboard
-
-
-
-brew install cliclick
-
-
-pip install ultralytics
-
-for the error OMP: Error #15: Initializing libomp.dylib, but found libiomp5.dylib already initialized.
-
-pip install supervision
-
-run the following command before executing the program
-export KMP_DUPLICATE_LIB_OK=TRUE
-
-deleted libomp.dylib file in the major env
