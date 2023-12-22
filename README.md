@@ -1,5 +1,6 @@
 # Gesture Detection Application
 
+### Note: [Python >= 3.10.0](https://www.python.org/downloads/) required
 - Create a python virtual environment
 ```bash 
 python -m venv <env_name>
@@ -29,12 +30,12 @@ pip install opencv-python numpy matplotlib
             ultralytics supervision
 ```
 
-Run the following command before executing the program
+<!--Run the following command before executing the program
 
 export `KMP_DUPLICATE_LIB_OK=TRUE`
 deleted `libomp.dylib` file in the major env
 
-for the error OMP: Error #15: Initializing `libomp.dylib`, but found `libiomp5.dylib` already initialized.
+for the error OMP: Error #15: Initializing `libomp.dylib`, but found `libiomp5.dylib` already initialized.-->
 
 
 
