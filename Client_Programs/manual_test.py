@@ -12,7 +12,7 @@ model = load_model('../Models/V2M_alpha.h5')
 img_height = 380
 img_width= 380
 # Load the image
-img_path = '../classmates_test_images/aadit.jpg'  # replace with the path to your image
+img_path = '../classmates_test_images/dog.jpg'  # replace with the path to your image
 img = image.load_img(img_path, target_size=(img_height, img_width))
 
 # Preprocess the image
