@@ -14,7 +14,7 @@ import time
 # Initialize a variable to hold the time of the last detection
 last_detection_time = None
 
-skip_frames = 1
+skip_frames = 5
 # Load class_names
 #Keras’s image_dataset_from_directory function generates labels as integer indices that 
 # correspond to the alphabetical order of the class names. 
@@ -25,7 +25,7 @@ class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cur
     
 # print(class_names)
 # Load the trained model for efficientnet
-model = load_model('../Models/V2M.h5')
+model = load_model('../Models/EfficientNetV2B3_not_unfreezed.h5')
 
 
 # Initialize MediaPipe Hands
@@ -33,8 +33,9 @@ mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
-img_height = 380
-img_width= 380
+#depends of the efficientnet architecture
+img_height = 300
+img_width= 300
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
@@ -44,14 +45,6 @@ frame_counter = 0
 img_count=1
 bbox = None
 predicted_class = None
-
-#the following directory is for rembg processing
-# temp_input_dir_name = 'tmp'
-# if not os.path.exists(temp_input_dir_name):
-#     os.makedirs(temp_input_dir_name)
-# temp_output_dir_name = 'output'
-# if not os.path.exists(temp_output_dir_name):
-#     os.makedirs(temp_output_dir_name)
 
 while cap.isOpened():
     success, frame = cap.read()
@@ -91,7 +84,7 @@ while cap.isOpened():
                 
                 hand_img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
                 
-                # Preprocess the hand image
+                # With background remove Preprocess the hand image
                 img = cv2.resize(hand_img, (img_height, img_width))
                 img = image.img_to_array(img)
                 # Normalize the image to the range [0, 1]
@@ -103,23 +96,13 @@ while cap.isOpened():
                 # Convert the OpenCV image (numpy.ndarray) to PIL.Image
                 # input_hand = Image.fromarray(cv2.cvtColor(hand_img, cv2.COLOR_BGR2RGB))
 
-                # Remove the background
+                # # Remove the background
                 # output = remove(np.array(input_hand))
 
-                # Convert the result back to numpy.ndarray for cv2 functions
+                # # Convert the result back to numpy.ndarray for cv2 functions
                 # bg_removed_hand_img = cv2.cvtColor(np.array(output), cv2.COLOR_RGB2BGR)
-                # img = np.expand_dims(img, axis=0)
-
-                # input = Image.open(input_hand)
-                # output = remove(input)
-                # output.save(output_hand)
-                # # Increment the img_counter
-                # img_count+=1
-         
-                
-                # # Preprocess the hand image
-                # bg_removed_hand_img = cv2.imread(output_hand)
-                # The cv2.resize function expects an image read by OpenCV (which is a NumPy array)
+        
+                # # The cv2.resize function expects an image read by OpenCV (which is a NumPy array)
                 # img = cv2.resize(bg_removed_hand_img, (img_height, img_width))
                 # img = image.img_to_array(img)
                 # img = np.expand_dims(img, axis=0)
@@ -137,11 +120,11 @@ while cap.isOpened():
 
     # # Draw the bounding box
     if bbox is not None:
-        cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (255, 255, 0), 3)  # Change the last parameter to adjust the thickness of the bounding box
+        cv2.rectangle(frame, (bbox[0], bbox[1]), (bbox[2], bbox[3]), (0, 0, 0), 3)  # Change the last parameter to adjust the thickness of the bounding box
 
     # Display the class name above the bounding box
     if predicted_class is not None:
-        cv2.putText(frame, class_names[predicted_class],(bbox[0], bbox[1]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,255,255), thickness=2,lineType=cv2.LINE_AA)    
+        cv2.putText(frame, class_names[predicted_class],(bbox[0], bbox[1]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,0,0), thickness=2,lineType=cv2.LINE_AA)    
     
     # Increment the frame counter
     frame_counter += 1
