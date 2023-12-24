@@ -25,7 +25,7 @@ class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cur
     
 # print(class_names)
 # Load the trained model for efficientnet
-model = load_model('../Models/EfficientNetV2B3_not_unfreezed.h5')
+model = load_model('../Models/EfficientNetB6_alpha.h5')
 
 
 # Initialize MediaPipe Hands
@@ -34,8 +34,8 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
 #depends of the efficientnet architecture
-img_height = 300
-img_width= 300
+img_height = 528
+img_width= 528
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
