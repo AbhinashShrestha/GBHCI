@@ -8,11 +8,11 @@ class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cur
 
 
 # Load the trained model
-model = load_model('../Models/V2M_alpha.h5')
-img_height = 380
-img_width= 380
+model = load_model('../Models/EfficientNetB6_without_onehot.keras')
+img_height = 528
+img_width= 528
 # Load the image
-img_path = '../classmates_test_images/dog.jpg'  # replace with the path to your image
+img_path = '../classmates_test_images/fista.jpg'  # replace with the path to your image
 img = image.load_img(img_path, target_size=(img_height, img_width))
 
 # Preprocess the image
@@ -29,3 +29,4 @@ confidence = np.max(predictions[0])
 # Print the class name and confidence
 print('The predicted class is:', class_names[predicted_class])
 print('Confidence:', confidence)
+
