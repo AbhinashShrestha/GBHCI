@@ -25,7 +25,7 @@ class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cur
     
 # print(class_names)
 # Load the trained model for efficientnet
-model = load_model('../Models/EfficientNetB6_alpha.h5')
+model = load_model('../Models/EfficientNetB6_without_onehot.keras')
 
 
 # Initialize MediaPipe Hands
@@ -87,8 +87,6 @@ while cap.isOpened():
                 # With background remove Preprocess the hand image
                 img = cv2.resize(hand_img, (img_height, img_width))
                 img = image.img_to_array(img)
-                # Normalize the image to the range [0, 1]
-                # img = img / 255.
                 img = np.expand_dims(img, axis=0)
                 
                 #below is rembg preprocessing
@@ -111,8 +109,8 @@ while cap.isOpened():
                 predictions = model.predict(img) 
                 predicted_class = np.argmax(predictions[0])
                 confidence = np.max(predictions[0])
-                # handler = ActionHandler(class_names[predicted_class])
-                # handler.execute_action()
+                handler = ActionHandler(class_names[predicted_class])
+                handler.execute_action()
 
                 # Print the class name and confidence
                 print('The predicted class is:', class_names[predicted_class])
