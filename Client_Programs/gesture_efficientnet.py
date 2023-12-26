@@ -25,7 +25,7 @@ class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cur
     
 # print(class_names)
 # Load the trained model for efficientnet
-model = load_model('../Models/EfficientNetB6_without_onehot.keras')
+model = load_model('../Models/EfficientNetV2B3_not_unfreezed.h5')
 
 
 # Initialize MediaPipe Hands
@@ -34,8 +34,8 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
 #depends of the efficientnet architecture
-img_height = 528
-img_width= 528
+img_height = 300
+img_width= 300
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
@@ -109,8 +109,8 @@ while cap.isOpened():
                 predictions = model.predict(img) 
                 predicted_class = np.argmax(predictions[0])
                 confidence = np.max(predictions[0])
-                handler = ActionHandler(class_names[predicted_class])
-                handler.execute_action()
+                # handler = ActionHandler(class_names[predicted_class])
+                # handler.execute_action()
 
                 # Print the class name and confidence
                 print('The predicted class is:', class_names[predicted_class])
