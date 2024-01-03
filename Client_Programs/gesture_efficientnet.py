@@ -109,8 +109,8 @@ while cap.isOpened():
                 predictions = model.predict(img) 
                 predicted_class = np.argmax(predictions[0])
                 confidence = np.max(predictions[0])
-                # handler = ActionHandler(class_names[predicted_class])
-                # handler.execute_action()
+                handler = ActionHandler(class_names[predicted_class])
+                handler.execute_action()
 
                 # Print the class name and confidence
                 print('The predicted class is:', class_names[predicted_class])
