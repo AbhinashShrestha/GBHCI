@@ -37,18 +37,18 @@ Install the required Python packages using the following command:
 pip install opencv-python numpy matplotlib Pillow mediapipe tensorflow PyAutoGUI rembg ultralytics supervision
 ```
 
-##How to use
+## How to use
 
 ```bash
-            python3 gesture.py
+ python3 gesture.py
 ```
-###Contribution
+## Contribution
 
 All contribution are welcome and encouraged.
 
 
 
-##Troubleshooting
+## Troubleshooting
 If you encounter the error OMP: Error #15: Initializing libomp.dylib, but found libiomp5.dylib already initialized, run the following command before running any Python program:
 
 export KMP_DUPLICATE_LIB_OK=TRUE
