@@ -1,48 +1,56 @@
-# Gesture Based Human Computer Interaction
+# Gesture Based Human-Computer Interaction
 
-### Note: [Python >= 3.11.0 < 3.12](https://www.python.org/downloads/) required 
-- Create a python virtual environment
+This is an ongoing project that enables interaction with computers using hand gestures, leveraging advanced deeplearning and computer vision techniques.
+
+
+## Prerequisites
+
+Ensure you have Python version 3.11.0 or later, but not version 3.12 or later. You can download the appropriate version of Python from the official website.
+You should have the model required for the project too.
+
+## Setting Up the Environment
+
+1. **Create a Python virtual environment:**
+    ```bash 
+    python3.11 -m venv major_env
+    ```
+2. **Activate the Python virtual environment:**
+    - On Linux/Mac:
+        ```bash 
+        source major_env/bin/activate
+        ```
+    - On Windows:
+        ```bash 
+        cd major_env/scripts/
+        activate
+        ```
+3. **Deactivate the Python virtual environment when done:**
+    ```bash 
+    deactivate
+    ```
+
+## Installing Dependencies
+
+Install the required Python packages using the following command:
+
 ```bash 
-python3.11 -m venv major_env
+pip install opencv-python numpy matplotlib Pillow mediapipe tensorflow PyAutoGUI rembg ultralytics supervision
 ```
-- Activate python virtual environment in linux/mac
-```bash 
-source <env_name>/bin/activate
+
+##How to use
+
+```bash
+            python3 gesture.py
 ```
-- Activate python virtual environment in windows
-```bash 
-cd <env_name>/scripts/
-activate
-``` 
-- Deactivate python virtual environment
-```bash 
-deactivate
-```
+###Contribution
 
-### Dependencies
-To install the required Python packages you can use the following command:
-```bash 
-pip install opencv-python numpy matplotlib
-            Pillow mediapipe
-            tensorflow
-            PyAutoGUI
-            rembg 
-            ultralytics supervision
-```
-
-for the error OMP: Error #15: Initializing `libomp.dylib`, but found `libiomp5.dylib` already initialized
+All contribution are welcome and encouraged.
 
 
 
-run the below command before any python program
+##Troubleshooting
+If you encounter the error OMP: Error #15: Initializing libomp.dylib, but found libiomp5.dylib already initialized, run the following command before running any Python program:
 
+export KMP_DUPLICATE_LIB_OK=TRUE
 
-export `KMP_DUPLICATE_LIB_OK=TRUE`
-
-
-
-and if that doesn't work delete `libomp.dylib` file in the env
-
-
-
-
+If the error persists, delete the libomp.dylib file in the environment.
