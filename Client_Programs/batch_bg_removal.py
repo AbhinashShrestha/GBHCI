@@ -50,8 +50,8 @@ from rembg import remove
 from PIL import Image
 
 # Define the input and output paths for this image
-input_image_path = '/Users/dipashrestha/Downloads/old.jpg'
-output_image_path = '/Users/dipashrestha/Downloads/old_no_bg.png'
+input_image_path = '/Users/dipashrestha/Downloads/a.jpg'
+output_image_path = '/Users/dipashrestha/Downloads/a.png'
 
 # Open the input image and remove the background
 input_image = Image.open(input_image_path)
