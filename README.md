@@ -11,8 +11,24 @@ You should have the model required for the project too.
 ## Setting Up the Environment
 
 1. **Create a Python virtual environment:**
+
     ```bash 
     python3.11 -m venv major_env
+    ```
+    windows powershell 
+    Install The Powershell Extension in VSCode
+    Then open the Powershell Extension terminal
+    Open Command Prompt 
+    ```
+    where python
+    ```
+    Now copy that path and 
+    ```
+    C:\Users\username\AppData\Local\Programs\Python\Python311\python.exe -m venv major_env
+    ```
+    
+    ```
+    .\\major_env\Scripts\Activate.ps1
     ```
 2. **Activate the Python virtual environment:**
     - On Linux/Mac:
@@ -20,9 +36,9 @@ You should have the model required for the project too.
         source major_env/bin/activate
         ```
     - On Windows:
-        ```bash 
-        cd major_env/scripts/
-        activate
+    Use the powershell extension terminal
+        ```
+        major_env\Scripts\Activate.ps1
         ```
 3. **Deactivate the Python virtual environment when done:**
     ```bash 
