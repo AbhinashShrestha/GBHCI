@@ -17,7 +17,7 @@ You should have the model required for the project too.
     ```
     windows powershell 
     Install The Powershell Extension in VSCode
-    Then open the Powershell Extension terminal
+    Then open the Powershell Extension terminal by navigation to the activate.ps1 file which automatically open the powershell extension terminal
     Open Command Prompt 
     ```
     where python
