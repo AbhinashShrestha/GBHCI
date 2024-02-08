@@ -23,7 +23,7 @@ runs/
 *.keras
 *.log
 *.zip
-
+Non_Git
 #ignore 
 .DS_Store
 __pycache__/
