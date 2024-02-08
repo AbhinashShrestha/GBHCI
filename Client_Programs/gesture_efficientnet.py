@@ -5,7 +5,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import time
 import json
-from rembg import remove
+# from rembg import remove
 from PIL import Image
 import io
 import os
@@ -13,6 +13,8 @@ from actions import *
 import time
 # Initialize a variable to hold the time of the last detection
 last_detection_time = None
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
 skip_frames = 5
 # Load class_names
@@ -25,7 +27,7 @@ class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cur
     
 # print(class_names)
 # Load the trained model for efficientnet
-model = load_model('../Models/EfficientNetV2B3_not_unfreezed.h5')
+model = load_model('../Non_Git\Models\EfficientNetV2B3_not_unfreezed.h5')
 
 
 # Initialize MediaPipe Hands
