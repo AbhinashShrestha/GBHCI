@@ -3,6 +3,7 @@ Dataset_alpha/
 Dataset_alpha_copy/
 
 # Ignore Original_Dataset
+Data
 Original_Dataset/
 Dataset
 asl_dataset
