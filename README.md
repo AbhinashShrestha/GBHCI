@@ -12,7 +12,7 @@ You should have the model required for the project too.
 
 1. **Create a Conda environment:**
 
-    conda create -n major python=3.11
+    conda create -n major python=3.11.5
 
 2. **Activate the Python virtual environment:**
     - On Linux/Mac:
