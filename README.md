@@ -10,35 +10,14 @@ You should have the model required for the project too.
 
 ## Setting Up the Environment
 
-1. **Create a Python virtual environment:**
+1. **Create a Conda environment:**
 
-    ```bash 
-    python3.11 -m venv major_env
-    ```
-    windows powershell 
-    Install The Powershell Extension in VSCode
-    Then open the Powershell Extension terminal by navigation to the activate.ps1 file which automatically open the powershell extension terminal
-    Open Command Prompt 
-    ```
-    where python
-    ```
-    Now copy that path and 
-    ```
-    C:\Users\username\AppData\Local\Programs\Python\Python311\python.exe -m venv major_env
-    ```
-    
-    ```
-    .\\major_env\Scripts\Activate.ps1
-    ```
+    conda create -n major python=3.11
+
 2. **Activate the Python virtual environment:**
     - On Linux/Mac:
         ```bash 
-        source major_env/bin/activate
-        ```
-    - On Windows:
-    Use the powershell extension terminal
-        ```
-        major_env\Scripts\Activate.ps1
+        conda activate major
         ```
 3. **Deactivate the Python virtual environment when done:**
     ```bash 
@@ -46,13 +25,28 @@ You should have the model required for the project too.
     ```
 
 ## Installing Dependencies
-
+Install Cuda
 Install the required Python packages using the following command:
-
-```bash 
-pip install opencv-python numpy matplotlib Pillow mediapipe tensorflow PyAutoGUI rembg ultralytics supervision
+``` bash
+conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
+```
+tensorflow route
+requires python 3.10 and tensorflow 2.10
+Cuz google is not supporting windows native and my wsl doesnt open
+```
+conda create -n major_tensorflow python=3.10
+conda install -c conda-forge cudatoolkit=11.2 cudnn=8.1.0
+```
+test if your gpu is detected 
+```
+python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 ```
 
+
+install 
+conda install conda-forge::opencv
+pip install mediapipe
+pip install pydot
 ## How to use
 
 ```bash
