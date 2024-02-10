@@ -36,6 +36,7 @@ Cuz google is not supporting windows native and my wsl doesnt open
 ```
 conda create -n major_tensorflow python=3.10
 conda install -c conda-forge cudatoolkit=11.2 cudnn=8.1.0
+conda install -c nvidia cuda-nvcc
 ```
 test if your gpu is detected 
 ```
