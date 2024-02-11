@@ -30,7 +30,7 @@ class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cur
 # the following model was trained the Dataset_alpha
 # model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetB6_FEB_8_before_unfreeze.h5')
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetB6_FEB_8_before_unfreeze.h5')
+model = load_model('/home/anon/MajorProject/Non_Git/Models/EfficientNetV2L_FEB_9_finetuned.keras')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
