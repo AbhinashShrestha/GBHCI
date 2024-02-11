@@ -5,7 +5,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import time
 import json
-# from rembg import remove
+from rembg import remove
 from PIL import Image
 import io
 import os
@@ -16,21 +16,19 @@ last_detection_time = None
 import os
 os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
 
-skip_frames = 5
-# Load class_names
-#Keras’s image_dataset_from_directory function generates labels as integer indices that 
-# correspond to the alphabetical order of the class names. 
-# when we use np.argmax(predictions[0]) to get the predicted class index,
-# this index should correspond to the correct class name in the class_names list
-# with open('../class/class_names.json', 'r') as f:
-class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cursor_Movement", "Double_Click", "Initiation", "Left_Click", "Neutral", "Nothing", "Right_Click", "Screenshot", "Scroll", "Shutdown", "Volume_Decrease", "Volume_Increase"]
-    
+skip_frames = 1
+# class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cursor_Movement", "Double_Click", "Initiation", "Left_Click", "Neutral", "Nothing", "Right_Click", "Screenshot", "Scroll", "Shutdown", "Volume_Decrease", "Volume_Increase"]
+
+#for asl dataset that has no backgrounf
+class_names = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+
 # print(class_names)
 # Load the trained model for efficientnet
 # the following model was trained the Dataset_alpha
 # model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetB6_FEB_8_before_unfreeze.h5')
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetB6_FEB_8_before_unfreeze.h5')
+#this model was trained using asl dataset with no background
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2L_FEB_9_finetuned.keras')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
@@ -38,10 +36,10 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
 #depends of the efficientnet architecture
-# img_height = 300
-# img_width= 300
-img_height = 528 #EfficientNetB6
-img_width = 528
+img_height = 480 #EV2L
+img_width= 480
+# img_height = 528 #EfficientNetB6
+# img_width = 528
 # For webcam input:
 cap = cv2.VideoCapture(0)
 
@@ -88,9 +86,6 @@ while cap.isOpened():
                 # Extract the hand image
                 
                 hand_img = frame[bbox[1]:bbox[3], bbox[0]:bbox[2]]
-                
-                #below is rembg preprocessing
-
                 # Convert the OpenCV image (numpy.ndarray) to PIL.Image
                 input_hand = Image.fromarray(cv2.cvtColor(hand_img, cv2.COLOR_BGR2RGB))
 
