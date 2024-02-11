@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 import subprocess
 import logging
-
+import platform
 class ActionHandler:
     def __init__(self, predicted_class):
         self.predicted_class = predicted_class
@@ -57,6 +57,8 @@ class ActionHandler:
                 self.Play()
             elif self.predicted_class == "Pause":
                 self.Pause()
+            elif self.predicted_class == "PowerPoint_Open":
+                self.PowerPoint_Open()
             else:
                 self.logger.warning("Invalid predicted class: %s", self.predicted_class)
         except Exception as e:
@@ -81,8 +83,17 @@ class ActionHandler:
         except Exception as e:
             self.logger.error("Error decreasing brightness: %s", e)
 
+    # def Chrome_Open(self):
+    #     subprocess.run(["open", "-a", "Google Chrome"])
+    #     self.logger.info("Chrome Opened")
     def Chrome_Open(self):
-        subprocess.run(["open", "-a", "Google Chrome"])
+        if platform.system() == "Windows":
+            subprocess.run(["powershell", "-Command", "Start-Process chrome"])
+        elif platform.system() == "Darwin":  # Darwin is the OS name for Mac
+            subprocess.run(["open", "-a", "Google Chrome"])
+        else:
+            self.logger.error("Unsupported platform: %s", platform.system())
+            return
         self.logger.info("Chrome Opened")
 
     def Cursor_Movement(self):
@@ -168,13 +179,23 @@ class ActionHandler:
         os.system("sudo -S shutdown -h now")
         self.logger.info("Shutdown")
 
+        
     def Volume_Increase(self):
         try:
-            #require cliclick to be installed
-            subprocess.call(["cliclick", "kp:volume-up", "kp:volume-up"]) #volume increase by two clicks
-            # Increase volume
-            #native function for mac only
-            # subprocess.call(["osascript", "-e", "set volume output volume (output volume of (get volume settings) + 10)"])
+            # Check if the system is Windows
+            if platform.system() == 'Windows':
+                # Define the PowerShell script
+                ps_script = "$obj = new-object -com wscript.shell; $obj.SendKeys([char]175)"
+                
+                # Run the PowerShell script
+                os.system('powershell.exe -Command "' + ps_script + '"')
+            else:
+                # Increase volume for non-Windows systems
+                # require cliclick to be installed
+                os.system("cliclick kp:volume-up kp:volume-up") # volume increase by two clicks
+                
+                # native function for mac only
+                # os.system("osascript -e 'set volume output volume (output volume of (get volume settings) + 10)'")
             self.logger.info("Volume Increased")
         except Exception as e:
             self.logger.error("Error increasing volume: %s", e)
@@ -182,16 +203,24 @@ class ActionHandler:
 
     def Volume_Decrease(self):
         try:
-            # Decrease volume
-            #require cliclick to be installed
-            subprocess.call(["cliclick", "kp:volume-down", "kp:volume-down"]) #volume decrease by two clicks
-            
-            #native function for mac only it wont show the volume change indicator
-            # subprocess.call(["osascript", "-e", "set volume output volume (output volume of (get volume settings) - 10)"])
-            # print("Volume Decreased")
+            # Check if the system is Windows
+            if platform.system() == 'Windows':
+                # Define the PowerShell script
+                ps_script = "$obj = new-object -com wscript.shell; $obj.SendKeys([char]174)"
+                
+                # Run the PowerShell script
+                os.system('powershell.exe -Command "' + ps_script + '"')
+            else:
+                # Decrease volume for non-Windows systems
+                # require cliclick to be installed
+                os.system("cliclick kp:volume-down kp:volume-down") # volume decrease by two clicks
+                
+                # native function for mac only it wont show the volume change indicator
+                # os.system("osascript -e 'set volume output volume (output volume of (get volume settings) - 10)'")
+                # print("Volume Decreased")
         except Exception as e:
             self.logger.error("Error decreasing volume: %s", e)
-    
+        
     
     def Play(self):
         pass
@@ -199,9 +228,27 @@ class ActionHandler:
     
     def Pause(self):
         pass
-        
+
+    
+    def PowerPoint_Open(self):
+        try:
+            # Check if the system is Windows
+            if platform.system() == "Windows":
+                # Define the PowerShell command
+                ps_command = 'Start-Process "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\PowerPoint.lnk"'
+                
+                # Run the PowerShell command
+                subprocess.Popen(["powershell", "-Command", ps_command], stdout=subprocess.PIPE)
+            else:
+                self.logger.error("Unsupported platform: %s", platform.system())
+                return
+            self.logger.info("PowerPoint Opened")
+        except Exception as e:
+            self.logger.error("Error opening PowerPoint: %s", e)
+
+            
         
 # Example usage:
-# predicted_class = "Volume_Decrease"  # Replace this with the actual predicted class
-# handler = ActionHandler(predicted_class)
-# handler.execute_action()
+predicted_class = "PowerPoint_Open"  # Replace this with the actual predicted class
+handler = ActionHandler(predicted_class)
+handler.execute_action()
