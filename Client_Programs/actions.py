@@ -3,6 +3,8 @@ import os
 from datetime import datetime
 import subprocess
 import logging
+import screen_brightness_control as sbc
+
 import platform
 class ActionHandler:
     def __init__(self, predicted_class):
@@ -68,24 +70,85 @@ class ActionHandler:
 
     def Brightness_Increase(self):
         try:
-            #for mac
-            command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 144', '-e', 'end tell']
-            subprocess.run(command)
-            self.logger.info("Brightness Increased")
+            if platform.system() == 'Darwin':  # for mac
+                command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 144', '-e', 'end tell']
+                subprocess.run(command)
+                self.logger.info("Brightness Increased")
+            elif platform.system() == 'Windows':  # for windows
+                # get the brightness
+                brightness = sbc.get_brightness()
+
+                # increase the brightness for all displays
+                new_brightness = [min(b + 5, 100) for b in brightness]
+
+                # calculate the average brightness
+                avg_brightness = int(sum(new_brightness) / len(new_brightness))
+
+                # set the new brightness
+                sbc.set_brightness(avg_brightness)
+                print(avg_brightness)
+
+                # show the current brightness for each detected monitor
+                for monitor in sbc.list_monitors():
+                    self.logger.info(f"{monitor} : {sbc.get_brightness(display=monitor)} %")
+                
         except Exception as e:
             self.logger.error("Error increasing brightness: %s", e)
 
+
+    # def Brightness_Increase(self):
+    #     try:
+    #         if platform.system() == 'Darwin':  # for mac
+    #             command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 144', '-e', 'end tell']
+    #             subprocess.run(command)
+    #             self.logger.info("Brightness Increased")
+    #         elif platform.system() == 'Windows':  # for windows
+    #             # Define the PowerShell script
+    #             ps_script = "Get-CimInstance -Namespace root/WMI -Classname WmiMonitorBrightnessMethods | Invoke-CimMethod -Methodname WmiSetBrightness -Argument @{ Timeout = 0; Brightness = 50}"
+
+                
+    #             # Run the PowerShell script
+    #             os.system('powershell.exe -Command "' + ps_script + '"')
+    #             self.logger.info("Brightness Increased")
+    #     except Exception as e:
+    #         self.logger.error("Error increasing brightness: %s", e)
+
+
+    # def Brightness_Decrease(self):
+    #     try:
+    #         command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 145', '-e', 'end tell']
+    #         subprocess.run(command)
+    #         self.logger.info("Brightness Decreased")
+    #     except Exception as e:
+    #         self.logger.error("Error decreasing brightness: %s", e)
+
     def Brightness_Decrease(self):
         try:
-            command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 145', '-e', 'end tell']
-            subprocess.run(command)
-            self.logger.info("Brightness Decreased")
+            if platform.system() == 'Darwin':  # for mac
+                command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 145', '-e', 'end tell']
+                subprocess.run(command)
+                self.logger.info("Brightness Decreased")
+            elif platform.system() == 'Windows':  # for windows
+                # get the brightness
+                brightness = sbc.get_brightness()
+
+                # decrease the brightness for all displays
+                new_brightness = [max(b - 5, 5) for b in brightness]
+
+                # calculate the average brightness
+                avg_brightness = int(sum(new_brightness) / len(new_brightness))
+
+                # set the new brightness
+                sbc.set_brightness(avg_brightness)
+                print(avg_brightness)
+
+                # show the current brightness for each detected monitor
+                for monitor in sbc.list_monitors():
+                    self.logger.info(f"{monitor} : {sbc.get_brightness(display=monitor)} %")
         except Exception as e:
             self.logger.error("Error decreasing brightness: %s", e)
 
-    # def Chrome_Open(self):
-    #     subprocess.run(["open", "-a", "Google Chrome"])
-    #     self.logger.info("Chrome Opened")
+
     def Chrome_Open(self):
         if platform.system() == "Windows":
             subprocess.run(["powershell", "-Command", "Start-Process chrome"])
@@ -122,7 +185,7 @@ class ActionHandler:
         self.logger.info("Neutral")
 
     def Nothing(self):
-       self.logger.info("Nothing")
+        self.logger.info("Nothing")
 
     def Right_Click(self):
         try:
@@ -249,6 +312,6 @@ class ActionHandler:
             
         
 # Example usage:
-predicted_class = "PowerPoint_Open"  # Replace this with the actual predicted class
+predicted_class = "Volume_Decrease"  # Replace this with the actual predicted class
 handler = ActionHandler(predicted_class)
 handler.execute_action()
