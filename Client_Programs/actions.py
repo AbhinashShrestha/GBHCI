@@ -6,6 +6,12 @@ import logging
 import screen_brightness_control as sbc
 from PIL import ImageGrab
 import platform
+import tkinter as tk
+from tkinter import messagebox
+
+
+
+
 class ActionHandler:
     def __init__(self, predicted_class):
         self.predicted_class = predicted_class
@@ -35,8 +41,8 @@ class ActionHandler:
                 self.Cursor_Movement()
             elif self.predicted_class == "Double_Click":
                 self.Double_Click()
-            elif self.predicted_class == "Initiation":
-                self.Initiation()
+            elif self.predicted_class == "VSCode_Open":
+                self.VSCode_Open()
             elif self.predicted_class == "Left_Click":
                 self.Left_Click()
             elif self.predicted_class == "Nothing":
@@ -66,32 +72,32 @@ class ActionHandler:
             print("An error occurred while executing the action.")
 
 
-    # def Brightness_Increase(self):
-    #     try:
-    #         if platform.system() == 'Darwin':  # for mac
-    #             command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 144', '-e', 'end tell']
-    #             subprocess.run(command)
-    #             self.logger.info("Brightness Increased")
-    #         elif platform.system() == 'Windows':  # for windows
-    #             # get the brightness
-    #             brightness = sbc.get_brightness()
+    def Brightness_Increase(self):
+        try:
+            if platform.system() == 'Darwin':  # for mac
+                command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 144', '-e', 'end tell']
+                subprocess.run(command)
+                self.logger.info("Brightness Increased")
+            elif platform.system() == 'Windows':  # for windows
+                # get the brightness
+                brightness = sbc.get_brightness()
 
-    #             # increase the brightness for all displays
-    #             new_brightness = [min(b + 5, 100) for b in brightness]
+                # increase the brightness for all displays
+                new_brightness = [min(b + 5, 100) for b in brightness]
 
-    #             # calculate the average brightness
-    #             avg_brightness = int(sum(new_brightness) / len(new_brightness))
+                # calculate the average brightness
+                avg_brightness = int(sum(new_brightness) / len(new_brightness))
 
-    #             # set the new brightness
-    #             sbc.set_brightness(avg_brightness)
-    #             print(avg_brightness)
+                # set the new brightness
+                sbc.set_brightness(avg_brightness)
+                print(avg_brightness)
 
-    #             # show the current brightness for each detected monitor
-    #             for monitor in sbc.list_monitors():
-    #                 self.logger.info(f"{monitor} : {sbc.get_brightness(display=monitor)} %")
+                # show the current brightness for each detected monitor
+                for monitor in sbc.list_monitors():
+                    self.logger.info(f"{monitor} : {sbc.get_brightness(display=monitor)} %")
                 
-    #     except Exception as e:
-    #         self.logger.error("Error increasing brightness: %s", e)
+        except Exception as e:
+            self.logger.error("Error increasing brightness: %s", e)
 
 
     # def Brightness_Increase(self):
@@ -161,8 +167,27 @@ class ActionHandler:
         except Exception as e:
             self.logger.error("Error performing double click: %s", e)
 
-    def Initiation(self):
-        self.logger.info("Initiated")
+    def VSCode_Open(self):
+        try:
+            if platform.system() == "Windows":
+            # Define the PowerShell command
+                # ps_command = 'Start-Process "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\Visual Studio Code\\Visual Studio Code.lnk"'
+                ps_command = 'code'                
+                # Run the PowerShell command
+                subprocess.Popen(["powershell", "-Command", ps_command], stdout=subprocess.PIPE)
+            elif platform.system() == "Darwin":  # Darwin is the OS name for Mac
+                subprocess.run(["open", "-a", "Visual Studio Code"])
+                self.logger.info("VSCode Opened")
+            else:
+                self.logger.error("Unsupported platform: %s", platform.system())
+                return
+        except (subprocess.CalledProcessError, OSError):
+            # If VSCode can't be opened, show a message box
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showinfo("Error", "VSCode could not be opened.")
+            root.destroy()  # Destroy the main window
+            self.logger.error("VSCode could not be opened.")
 
     def Left_Click(self):
         try:
@@ -171,15 +196,13 @@ class ActionHandler:
         except Exception as e:
             self.logger.error("Error performing left click: %s", e)
         
-    def Neutral(self):
-        self.logger.info("Neutral")
-
     def Nothing(self):
         self.logger.info("Nothing")
 
     def Right_Click(self):
         try:
-            pyautogui.click(button='right')
+            # pyautogui.click(button='right')
+            pyautogui.rightClick()
             self.logger.info("Right Clicked")
         except Exception as e:
             self.logger.error("Error performing right click: %s", e)
@@ -332,6 +355,6 @@ class ActionHandler:
             
         
 # Example usage:
-predicted_class = "Screenshot"  # Replace this with the actual predicted class
+predicted_class = "Left_Click"  # Replace this with the actual predicted class
 handler = ActionHandler(predicted_class)
 handler.execute_action()
