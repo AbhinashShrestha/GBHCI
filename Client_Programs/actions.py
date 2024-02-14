@@ -68,32 +68,32 @@ class ActionHandler:
             print("An error occurred while executing the action.")
 
 
-    def Brightness_Increase(self):
-        try:
-            if platform.system() == 'Darwin':  # for mac
-                command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 144', '-e', 'end tell']
-                subprocess.run(command)
-                self.logger.info("Brightness Increased")
-            elif platform.system() == 'Windows':  # for windows
-                # get the brightness
-                brightness = sbc.get_brightness()
+    # def Brightness_Increase(self):
+    #     try:
+    #         if platform.system() == 'Darwin':  # for mac
+    #             command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 144', '-e', 'end tell']
+    #             subprocess.run(command)
+    #             self.logger.info("Brightness Increased")
+    #         elif platform.system() == 'Windows':  # for windows
+    #             # get the brightness
+    #             brightness = sbc.get_brightness()
 
-                # increase the brightness for all displays
-                new_brightness = [min(b + 5, 100) for b in brightness]
+    #             # increase the brightness for all displays
+    #             new_brightness = [min(b + 5, 100) for b in brightness]
 
-                # calculate the average brightness
-                avg_brightness = int(sum(new_brightness) / len(new_brightness))
+    #             # calculate the average brightness
+    #             avg_brightness = int(sum(new_brightness) / len(new_brightness))
 
-                # set the new brightness
-                sbc.set_brightness(avg_brightness)
-                print(avg_brightness)
+    #             # set the new brightness
+    #             sbc.set_brightness(avg_brightness)
+    #             print(avg_brightness)
 
-                # show the current brightness for each detected monitor
-                for monitor in sbc.list_monitors():
-                    self.logger.info(f"{monitor} : {sbc.get_brightness(display=monitor)} %")
+    #             # show the current brightness for each detected monitor
+    #             for monitor in sbc.list_monitors():
+    #                 self.logger.info(f"{monitor} : {sbc.get_brightness(display=monitor)} %")
                 
-        except Exception as e:
-            self.logger.error("Error increasing brightness: %s", e)
+    #     except Exception as e:
+    #         self.logger.error("Error increasing brightness: %s", e)
 
 
     # def Brightness_Increase(self):
@@ -113,14 +113,6 @@ class ActionHandler:
     #     except Exception as e:
     #         self.logger.error("Error increasing brightness: %s", e)
 
-
-    # def Brightness_Decrease(self):
-    #     try:
-    #         command = ['osascript', '-e', 'tell application "System Events"', '-e', 'key code 145', '-e', 'end tell']
-    #         subprocess.run(command)
-    #         self.logger.info("Brightness Decreased")
-    #     except Exception as e:
-    #         self.logger.error("Error decreasing brightness: %s", e)
 
     def Brightness_Decrease(self):
         try:
