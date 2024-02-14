@@ -21,17 +21,17 @@ skip_frames = 5
 # when we use np.argmax(predictions[0]) to get the predicted class index,
 # this index should correspond to the correct class name in the class_names list
 # with open('../class/class_names.json', 'r') as f:
-class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cursor_Movement", "Double_Click", "Initiation", "Left_Click", "Neutral", "Nothing", "Right_Click", "Screenshot", "Scroll", "Shutdown", "Volume_Decrease", "Volume_Increase"]
+class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cursor_Movement", "Double_Click", "Initiation", "Left_Click", "Neutral", "PowerPoint_Open", "Right_Click", "Screenshot", "Scroll", "Shutdown", "Volume_Decrease", "Volume_Increase"]
     
 # print(class_names)
 # Load the trained model for efficientnet
-model = load_model('../Models/ResNet152V2_0.7033.keras')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\Resnet50v2_FEB_14_Dataset_alpha_finetuned.h5')
 
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
+hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.6)
 
 
 img_height = 224
@@ -109,8 +109,8 @@ while cap.isOpened():
                 predictions = model.predict(img) 
                 predicted_class = np.argmax(predictions[0])
                 confidence = np.max(predictions[0])
-                handler = ActionHandler(class_names[predicted_class])
-                handler.execute_action()
+                # handler = ActionHandler(class_names[predicted_class])
+                # handler.execute_action()
 
                 # Print the class name and confidence
                 print('The predicted class is:', class_names[predicted_class])
