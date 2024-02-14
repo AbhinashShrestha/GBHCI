@@ -4,7 +4,7 @@ from datetime import datetime
 import subprocess
 import logging
 import screen_brightness_control as sbc
-
+from PIL import ImageGrab
 import platform
 class ActionHandler:
     def __init__(self, predicted_class):
@@ -39,8 +39,6 @@ class ActionHandler:
                 self.Initiation()
             elif self.predicted_class == "Left_Click":
                 self.Left_Click()
-            elif self.predicted_class == "Neutral":
-                self.Neutral()
             elif self.predicted_class == "Nothing":
                 self.Nothing()
             elif self.predicted_class == "Right_Click":
@@ -186,42 +184,72 @@ class ActionHandler:
         except Exception as e:
             self.logger.error("Error performing right click: %s", e)
 
+    # def Screenshot(self):
+    #     try:
+    #         #for mac os
+    #         # Get the current date and time
+    #         now = datetime.now()
+    #         # Format the date and time string to be used in the filename
+    #         dt_string = now.strftime("Screen Shot %Y-%m-%d at %I.%M.%S %p")
+    #         # Get the path to the desktop
+    #         desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
+    #         # Define the command
+    #         command = ['screencapture', os.path.join(desktop_path, f'{dt_string}.png')]
+    #         # Run the command
+    #         subprocess.run(command)
+    #         self.logger.info("Screenshot taken and saved on the desktop.")
+    #     except Exception as e:
+    #         self.logger.error("Error taking screenshot: %s", e)
+    #         print("An error occurred while taking a screenshot.")
+
     def Screenshot(self):
         try:
-            #for mac os
             # Get the current date and time
             now = datetime.now()
-            # Format the date and time string to be used in the filename
-            dt_string = now.strftime("Screen Shot %Y-%m-%d at %I.%M.%S %p")
-            # Get the path to the desktop
-            desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
-            # Define the command
-            command = ['screencapture', os.path.join(desktop_path, f'{dt_string}.png')]
-            # Run the command
-            subprocess.run(command)
-            
-            #for windows
-            # # Get the path to the desktop
-            # desktop = os.path.join(os.path.expanduser("~"), "Desktop")
 
-            # # Get the current date and time
-            # now = datetime.now()
+            # Check the platform
+            if platform.system() == 'Darwin':
+                # macOS
+                # Format the date and time string to be used in the filename
+                dt_string = now.strftime("Screen Shot %Y-%m-%d at %I.%M.%S %p")
+                # Define the path to save screenshots
+                screenshot_path = os.path.join(os.path.expanduser("~"), "Desktop", "Screenshots")
+                # Create the directory if it doesn't exist
+                os.makedirs(screenshot_path, exist_ok=True)
+                # Define the command
+                command = ['screencapture', os.path.join(screenshot_path, f'{dt_string}.png')]
+                # Run the command
+                subprocess.run(command)
+                # Open the folder containing the screenshot
+                subprocess.run(['open', screenshot_path])
+            elif platform.system() == 'Windows':
+                # Windows
+                # Format the date and time string to be used in the filename
+                dt_string = now.strftime("%Y-%m-%d_%I.%M.%S_%p")
+                # Define the path to save screenshots
+                screenshot_path = r"C:\Users\Anon\Desktop\Screenshots"
+                # Create the directory if it doesn't exist
+                os.makedirs(screenshot_path, exist_ok=True)
+                # Define the filename
+                filename = os.path.join(screenshot_path, f"{dt_string}.png")
+                # Capture the entire screen
+                screenshot = ImageGrab.grab()
+                # Save the screenshot to a file
+                screenshot.save(filename)
+                # Close the screenshot
+                screenshot.close()
+                # Open the folder containing the screenshot
+                os.startfile(screenshot_path)
+            else:
+                print("Unsupported platform.")
+                return
 
-            # # Format the date and time as a string
-            # now_str = now.strftime("%Y-%m-%d_%H-%M-%S")
-
-            # # Create the filename
-            # filename = f"screenshot_{now_str}.png"
-
-            # # Take a screenshot
-            # im1 = pyautogui.screenshot()
-
-            # # Save the screenshot on the desktop
-            # im1.save(os.path.join(desktop, filename))
-            self.logger.info("Screenshot taken and saved on the desktop.")
+            self.logger.info("Screenshot taken and saved.")
         except Exception as e:
             self.logger.error("Error taking screenshot: %s", e)
             print("An error occurred while taking a screenshot.")
+
+
 
     def Scroll(self):
         try:
@@ -304,6 +332,6 @@ class ActionHandler:
             
         
 # Example usage:
-predicted_class = "Volume_Decrease"  # Replace this with the actual predicted class
+predicted_class = "Screenshot"  # Replace this with the actual predicted class
 handler = ActionHandler(predicted_class)
 handler.execute_action()
