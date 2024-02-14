@@ -30,7 +30,7 @@ class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cur
 # the following model was trained the Dataset_alpha
 # model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetB6_FEB_8_before_unfreeze.h5')
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetB6_FEB_8_before_unfreeze.h5')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2S_300x300_FEB_14_Dataset_alpha.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
@@ -38,10 +38,10 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
 #depends of the efficientnet architecture
-# img_height = 300
-# img_width= 300
-img_height = 528 #EfficientNetB6
-img_width = 528
+img_height = 300 
+img_width= 300 #for efficientnetv2s
+# img_height = 528 #EfficientNetB6
+# img_width = 528
 # For webcam input:
 cap = cv2.VideoCapture(0)
 
@@ -93,29 +93,13 @@ while cap.isOpened():
                 img = cv2.resize(hand_img, (img_height, img_width))
                 img = image.img_to_array(img)
                 img = np.expand_dims(img, axis=0)
-                
-                #below is rembg preprocessing
-
-                # Convert the OpenCV image (numpy.ndarray) to PIL.Image
-                # input_hand = Image.fromarray(cv2.cvtColor(hand_img, cv2.COLOR_BGR2RGB))
-
-                # # Remove the background
-                # output = remove(np.array(input_hand))
-
-                # # Convert the result back to numpy.ndarray for cv2 functions
-                # bg_removed_hand_img = cv2.cvtColor(np.array(output), cv2.COLOR_RGB2BGR)
-        
-                # # The cv2.resize function expects an image read by OpenCV (which is a NumPy array)
-                # img = cv2.resize(bg_removed_hand_img, (img_height, img_width))
-                # img = image.img_to_array(img)
-                # img = np.expand_dims(img, axis=0)
 
                 # Use the model to predict the class
                 predictions = model.predict(img) 
                 predicted_class = np.argmax(predictions[0])
                 confidence = np.max(predictions[0])
-                handler = ActionHandler(class_names[predicted_class])
-                handler.execute_action()
+                # handler = ActionHandler(class_names[predicted_class])
+                # handler.execute_action()
 
                 # Print the class name and confidence
                 print('The predicted class is:', class_names[predicted_class])
