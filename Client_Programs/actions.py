@@ -51,10 +51,14 @@ class ActionHandler:
                 self.Right_Click()
             elif self.predicted_class == "Screenshot":
                 self.Screenshot()
-            elif self.predicted_class == "Scroll":
-                self.Scroll()
+            elif self.predicted_class == "Scroll_Up":
+                self.Scroll_Up()
+            elif self.predicted_class == "Scroll_Down":
+                self.Scroll_Down()
             elif self.predicted_class == "Shutdown":
                 self.Shutdown()
+            elif self.predicted_class == "Restart":
+                self.Restart()
             elif self.predicted_class == "Volume_Increase":
                 self.Volume_Increase()
             elif self.predicted_class == "Volume_Decrease":
@@ -157,15 +161,22 @@ class ActionHandler:
 
     def Cursor_Movement(self):
         self.logger.info("Cursor Moved")
-
+        
     def Double_Click(self):
         try:
-            # pyautogui.click(clicks=2, interval=0)
-            command = 'cliclick tc:.'
-            process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+            # Check if the system is Windows
+            if platform.system() == 'Windows':
+                # Use pyautogui to perform double click
+                pyautogui.doubleClick()
+            else:
+                # Perform double click for MacOS
+                # require cliclick to be installed
+                command = 'cliclick tc:.'
+                process = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
             self.logger.info("Double Clicked")
         except Exception as e:
             self.logger.error("Error performing double click: %s", e)
+
 
     def VSCode_Open(self):
         try:
@@ -206,24 +217,6 @@ class ActionHandler:
             self.logger.info("Right Clicked")
         except Exception as e:
             self.logger.error("Error performing right click: %s", e)
-
-    # def Screenshot(self):
-    #     try:
-    #         #for mac os
-    #         # Get the current date and time
-    #         now = datetime.now()
-    #         # Format the date and time string to be used in the filename
-    #         dt_string = now.strftime("Screen Shot %Y-%m-%d at %I.%M.%S %p")
-    #         # Get the path to the desktop
-    #         desktop_path = os.path.join(os.path.expanduser("~"), "Desktop")
-    #         # Define the command
-    #         command = ['screencapture', os.path.join(desktop_path, f'{dt_string}.png')]
-    #         # Run the command
-    #         subprocess.run(command)
-    #         self.logger.info("Screenshot taken and saved on the desktop.")
-    #     except Exception as e:
-    #         self.logger.error("Error taking screenshot: %s", e)
-    #         print("An error occurred while taking a screenshot.")
 
     def Screenshot(self):
         try:
@@ -274,18 +267,49 @@ class ActionHandler:
 
 
 
-    def Scroll(self):
+    def Scroll_Up(self):
         try:
-            pyautogui.scroll(1)
-            self.logger.info("Scrolled")
+            pyautogui.scroll(1000)
+            # pyautogui.mouseDown()
+            self.logger.info("Scrolled Up")
+        except Exception as e:
+            self.logger.error("Error scrolling: %s", e)
+
+
+    def Scroll_Down(self):
+        try:
+            pyautogui.scroll(-5000)
+            self.logger.info("Scrolled Down")
         except Exception as e:
             self.logger.error("Error scrolling: %s", e)
 
     def Shutdown(self):
-        os.system("sudo -S shutdown -h now")
-        self.logger.info("Shutdown")
+        try:
+            if platform.system() == "Darwin":
+                os.system("sudo -S shutdown -h now")
+            elif platform.system() == "Windows":
+                os.system("shutdown /s")
+            else:
+                self.logger.error("Unsupported operating system.")
+                return
+            self.logger.info("Shutdown")
+        except Exception as e:
+            self.logger.error(f"An error occurred: {e}")
 
-        
+    def Restart(self):
+        try:
+            if platform.system() == "Darwin":
+                os.system("sudo -S shutdown -r now")
+            elif platform.system() == "Windows":
+                os.system("shutdown /r /t 1")
+            else:
+                self.logger.error("Unsupported operating system.")
+                return
+            self.logger.info("Restart")
+        except Exception as e:
+            self.logger.error(f"An error occurred: {e}")
+
+
     def Volume_Increase(self):
         try:
             # Check if the system is Windows
@@ -355,6 +379,6 @@ class ActionHandler:
             
         
 # Example usage:
-predicted_class = "Left_Click"  # Replace this with the actual predicted class
+predicted_class = "Shutdown"  # Replace this with the actual predicted class
 handler = ActionHandler(predicted_class)
 handler.execute_action()
