@@ -10,32 +10,19 @@ from rembg import remove
 from PIL import Image
 import io
 import os
-# Load class_names
-#Keras’s image_dataset_from_directory function generates labels as integer indices that 
-# correspond to the alphabetical order of the class names. 
-# when we use np.argmax(predictions[0]) to get the predicted class index,
-# this index should correspond to the correct class name in the class_names list
-with open('../class/class_names.json', 'r') as f:
-    class_names = json.load(f)
-    
-# print(class_names)
+class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cursor_Movement", "Double_Click", "Initiation", "Left_Click", "Neutral", "PowerPoint_Open", "Right_Click", "Screenshot", "Scroll", "Shutdown", "Volume_Decrease", "Volume_Increase"]
+
 # for convexnet
 # Use the LayerScale and StochasticDepth classes that we copied from keras official code
-best_model = load_model('../Models/convnext_base_un_bg_removed.h5', compile=False, 
-                        custom_objects={"LayerScale": LayerScale, "StochasticDepth": StochasticDepth})
+best_model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\ConvNeXt-XL.h5', compile=False, custom_objects={"LayerScale": LayerScale, "StochasticDepth": StochasticDepth})
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
-img_height = 224
-img_width= 224 #for convexnet
-
-# img_height = 300 #for efficientnetv2s
-# img_width= 300
-# img_height = 384
-# img_width= 384 #for convexnet
+img_height = 384
+img_width= 384 #for convexnet
 
 # For webcam input:
 cap = cv2.VideoCapture(0)
