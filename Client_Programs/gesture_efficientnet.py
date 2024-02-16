@@ -24,7 +24,11 @@ skip_frames = 5
 # this index should correspond to the correct class name in the class_names list
 # with open('../class/class_names.json', 'r') as f:
 class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cursor_Movement", "Double_Click", "Initiation", "Left_Click", "Neutral", "Nothing", "Right_Click", "Screenshot", "Scroll", "Shutdown", "Volume_Decrease", "Volume_Increase"]
-    
+
+#for asl mix
+# class_names = ['A', 'B', 'Blank', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+
+
 # print(class_names)
 # Load the trained model for efficientnet
 # the following model was trained the Dataset_alpha
