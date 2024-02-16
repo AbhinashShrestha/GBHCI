@@ -379,6 +379,6 @@ class ActionHandler:
             
         
 # Example usage:
-predicted_class = "Shutdown"  # Replace this with the actual predicted class
-handler = ActionHandler(predicted_class)
-handler.execute_action()
+# predicted_class = "Shutdown"  # Replace this with the actual predicted class
+# handler = ActionHandler(predicted_class)
+# handler.execute_action()
