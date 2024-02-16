@@ -23,10 +23,10 @@ skip_frames = 5
 # when we use np.argmax(predictions[0]) to get the predicted class index,
 # this index should correspond to the correct class name in the class_names list
 # with open('../class/class_names.json', 'r') as f:
-class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cursor_Movement", "Double_Click", "Initiation", "Left_Click", "Neutral", "Nothing", "Right_Click", "Screenshot", "Scroll", "Shutdown", "Volume_Decrease", "Volume_Increase"]
+# class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cursor_Movement", "Double_Click", "Initiation", "Left_Click", "Neutral", "Nothing", "Right_Click", "Screenshot", "Scroll", "Shutdown", "Volume_Decrease", "Volume_Increase"]
 
 #for asl mix
-# class_names = ['A', 'B', 'Blank', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+class_names = ['A', 'B', 'Blank', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
 
 
 # print(class_names)
@@ -34,7 +34,7 @@ class_names = ["Brightness_Decrease", "Brightness_Increase", "Chrome_Open", "Cur
 # the following model was trained the Dataset_alpha
 # model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetB6_FEB_8_before_unfreeze.h5')
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2S_300x300_FEB_14_Dataset_alpha.h5')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2S_380x380_FEB_16_asl_mix_droprate_0.25_no_l2_reg.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
@@ -42,8 +42,8 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confidence=0.5)
 
 #depends of the efficientnet architecture
-img_height = 300 
-img_width= 300 #for efficientnetv2s
+img_height = 380 
+img_width= 380 #for efficientnetv2s
 # img_height = 528 #EfficientNetB6
 # img_width = 528
 # For webcam input:
