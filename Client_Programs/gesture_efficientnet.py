@@ -31,11 +31,8 @@ class_names = ['Brightness_Decrease', 'Brightness_Increase', 'Chrome_Open', 'Cur
 
 
 # print(class_names)
-# Load the trained model for efficientnet
-# the following model was trained the Dataset_alpha
-# model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetB6_FEB_8_before_unfreeze.h5')
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2M_300x300_Dataset_alpha.h5')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2L_300x300_Dataset_alpha.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
