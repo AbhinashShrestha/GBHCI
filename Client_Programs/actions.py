@@ -376,9 +376,8 @@ class ActionHandler:
         except Exception as e:
             self.logger.error("Error opening PowerPoint: %s", e)
 
-            
-        
+
 # Example usage:
-# predicted_class = "Shutdown"  # Replace this with the actual predicted class
+# predicted_class = "Brightness_Increase"  # Replace this with the actual predicted class
 # handler = ActionHandler(predicted_class)
 # handler.execute_action()
