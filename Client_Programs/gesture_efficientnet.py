@@ -31,7 +31,38 @@ skip_frames = 10
 
 #for final asl_mix 
 class_names = ['A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'U', 'V', 'W', 'X', 'Y']
+# class_names = ['A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'U', 'V', 'W', 'X', 'Y']
 
+# Define the mapping between class names and labels
+class_label_mapping = {
+    'A': 'Shutdown',
+    'B': 'Scroll_Up',
+    'Blank': 'Blank',
+    'C': 'Chrome_Open',
+    'E': 'Screenshot',
+    'F': 'Scroll_Down',
+    'G': 'G',
+    'H': 'H',
+    'I': 'Double Click',
+    'L': 'Left_Click',
+    'N': 'N',
+    'O': 'PowerPoint_Open',
+    'P': 'Brightness_Increase',
+    'Q': 'Brightness_Decrease',
+    'R': 'Right_Click',
+    'S': 'S',
+    'U': 'U',
+    'V': 'VSCode_Open',
+    'W': 'W',
+    'X': 'Volume_Down',
+    'Y': 'Volume_Increase'
+}
+
+# Create a dictionary that maps indices to labels
+class_labels = {i: class_label_mapping[name] for i, name in enumerate(class_names)}
+
+# print(index_to_label)
+# print(class_labels[0])
 # print(class_names)
 
 model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B3_300x300_final_asl_mix.h5')
@@ -104,7 +135,7 @@ while cap.isOpened():
                 # handler.execute_action()
 
                 # Print the class name and confidence
-                print('The predicted class is:', class_names[predicted_class])
+                print('The predicted class is:', class_labels[predicted_class])
                 print('Confidence:', confidence)
 
     # # Draw the bounding box
@@ -113,7 +144,7 @@ while cap.isOpened():
 
     # Display the class name above the bounding box
     if predicted_class is not None:
-        cv2.putText(frame, class_names[predicted_class],(bbox[0], bbox[1]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,0,0), thickness=2,lineType=cv2.LINE_AA)    
+        cv2.putText(frame, class_labels[predicted_class],(bbox[0], bbox[1]-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0,0,0), thickness=2,lineType=cv2.LINE_AA)    
     
     # Increment the frame counter
     frame_counter += 1
