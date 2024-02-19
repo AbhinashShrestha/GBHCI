@@ -37,56 +37,132 @@
 #         plt.show()
 
 
-import os
+# import os
+# from PIL import Image, ImageDraw, ImageFont
+
+# def create_collage(directory, output_path, images_per_row):
+#     # Get all subdirectories
+#     subdirectories = sorted([os.path.join(directory, d) for d in os.listdir(directory) if os.path.isdir(os.path.join(directory, d))])
+
+#     images = []
+#     labels = []
+
+#     for subdir in subdirectories:
+#         # Get all files in subdirectory
+#         files = [os.path.join(subdir, f) for f in os.listdir(subdir) if os.path.isfile(os.path.join(subdir, f))]
+
+#         # Filter out non-image files
+#         image_files = [f for f in files if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+
+#         if image_files:
+#             # Open the first image and append to list
+#             images.append(Image.open(image_files[0]))
+#             # Append the label (subdirectory name)
+#             labels.append(os.path.basename(subdir))
+
+#     # Determine the size of the collage
+#     max_width = max(image.width for image in images)
+#     max_height = max(image.height for image in images)
+
+#     # Create a new image for the collage
+#     collage = Image.new('RGB', (max_width * images_per_row, max_height * ((len(images) + images_per_row - 1) // images_per_row)))
+
+#     # Draw object for adding labels
+#     draw = ImageDraw.Draw(collage)
+#     # Font for labels (you may need to specify the full path to the font file)
+#     # font = ImageFont.truetype("arial", 15)
+#     font = ImageFont.truetype("/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 25)
+
+
+#     for i, image in enumerate(images):
+#         # Calculate the position of the image in the collage
+#         x = (i % images_per_row) * max_width
+#         y = (i // images_per_row) * max_height
+
+#         # Paste the image into the collage
+#         collage.paste(image, (x, y))
+
+#         # Draw the label
+#         draw.text((x + 10, y), labels[i], fill='Black', font=font)
+
+#     # Save the collage
+#     collage.save(output_path)
+
+# # Call the function with your directory and output path
+# create_collage('Data/Dataset_alpha', 'gesture.tiff', 4)
+
+
 from PIL import Image, ImageDraw, ImageFont
+import os
 
-def create_collage(directory, output_path, images_per_row):
-    # Get all subdirectories
-    subdirectories = sorted([os.path.join(directory, d) for d in os.listdir(directory) if os.path.isdir(os.path.join(directory, d))])
+# Define the mapping between folder names and labels
+folder_label_mapping = {
+    'A': 'Shutdown',
+    'B': 'Scroll_Up',
+    'C': 'Chrome_Open',
+    'E': 'Screenshot',
+    'F': 'Scroll_Down',
+    'G': 'G',
+    'H': 'H',
+    'I': 'Double Click',
+    'L': 'Left_Click',
+    'N': 'N',
+    'O': 'PowerPoint_Open',
+    'P': 'Brightness_Increase',
+    'Q': 'Brightness_Decrease',
+    'R': 'Right_Click',
+    'S': 'S',
+    'U': 'U',
+    'V': 'VSCode_Open',
+    'X': 'Volume_Down',
+    'Y': 'Volume_Increase'
+}
 
-    images = []
-    labels = []
+# Specify the path of the main folder
+main_folder_path = r'E:\MajorProject\Gesture based HCI\GBHCI\Data\asl_dataset'
 
-    for subdir in subdirectories:
-        # Get all files in subdirectory
-        files = [os.path.join(subdir, f) for f in os.listdir(subdir) if os.path.isfile(os.path.join(subdir, f))]
+# Create a new image for the collage
+collage = Image.new('RGB', (900, 2100))  # Adjust the size of the collage to fit the images
 
-        # Filter out non-image files
-        image_files = [f for f in files if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+# Create a draw object
+draw = ImageDraw.Draw(collage)
 
-        if image_files:
-            # Open the first image and append to list
-            images.append(Image.open(image_files[0]))
-            # Append the label (subdirectory name)
-            labels.append(os.path.basename(subdir))
+# Load a font (this will depend on your system)
+font = ImageFont.truetype("arial.ttf", 15)
 
-    # Determine the size of the collage
-    max_width = max(image.width for image in images)
-    max_height = max(image.height for image in images)
+x_offset = 0
+y_offset = 0
 
-    # Create a new image for the collage
-    collage = Image.new('RGB', (max_width * images_per_row, max_height * ((len(images) + images_per_row - 1) // images_per_row)))
+# Get the list of all subfolders in the main folder
+subfolders = [f.name for f in os.scandir(main_folder_path) if f.is_dir()]
 
-    # Draw object for adding labels
-    draw = ImageDraw.Draw(collage)
-    # Font for labels (you may need to specify the full path to the font file)
-    # font = ImageFont.truetype("arial", 15)
-    font = ImageFont.truetype("/usr/share/fonts/truetype/msttcorefonts/Arial.ttf", 25)
+# Iterate over each folder and add an image to the collage
+for folder in subfolders:
+    # Convert the folder name to uppercase for comparison
+    folder_upper = folder.upper()
 
+    # Check if the folder is in the list of classes
+    if folder_upper in folder_label_mapping:
+        # Get the list of images in the folder
+        images = os.listdir(os.path.join(main_folder_path, folder))
+        
+        # Open the first image in the folder
+        img = Image.open(os.path.join(main_folder_path, folder, images[0]))
+        
+        # Resize the image to fit in the collage
+        img = img.resize((300, 300))  # Adjust the size of the images to fit in the collage
+        
+        # Add the image to the collage
+        collage.paste(img, (x_offset, y_offset))
+        
+        # Draw the label on the image
+        draw.text((x_offset, y_offset), folder_label_mapping[folder_upper], fill="white", font=font)
+        
+        # Update the offsets
+        x_offset += 300
+        if x_offset >= collage.width:
+            x_offset = 0
+            y_offset += 300
 
-    for i, image in enumerate(images):
-        # Calculate the position of the image in the collage
-        x = (i % images_per_row) * max_width
-        y = (i // images_per_row) * max_height
-
-        # Paste the image into the collage
-        collage.paste(image, (x, y))
-
-        # Draw the label
-        draw.text((x + 10, y), labels[i], fill='Black', font=font)
-
-    # Save the collage
-    collage.save(output_path)
-
-# Call the function with your directory and output path
-create_collage('Data/Dataset_alpha', 'gesture.tiff', 4)
+# Save the collage
+collage.save('E:\MajorProject\Gesture based HCI\GBHCI\Visuals/Gestures.png')
