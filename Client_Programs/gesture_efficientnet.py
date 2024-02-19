@@ -34,7 +34,7 @@ class_names = ['A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'L', 'N', 'O', '
 
 # print(class_names)
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2M_300x300_asl_mix_finetuned.h5')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B3_300x300_final_asl_mix.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
@@ -43,9 +43,7 @@ hands = mp_hands.Hands(static_image_mode=False, max_num_hands=2, min_detection_c
 
 #depends of the efficientnet architecture
 img_height = 300 
-img_width= 300 #for efficientnetv2s
-# img_height = 528 #EfficientNetB6
-# img_width = 528
+img_width = 300
 # For webcam input:
 cap = cv2.VideoCapture(0)
 
@@ -121,7 +119,7 @@ while cap.isOpened():
     frame_counter += 1
 
     # Display the resulting frame
-    cv2.imshow('MediaPipe Hands', frame)
+    cv2.imshow('GBHCI', frame)
     if cv2.waitKey(1) & 0xFF == 27:
         break
 
