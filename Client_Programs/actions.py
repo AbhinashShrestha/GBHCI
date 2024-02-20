@@ -45,8 +45,8 @@ class ActionHandler:
                 self.VSCode_Open()
             elif self.predicted_class == "Left_Click":
                 self.Left_Click()
-            elif self.predicted_class == "Nothing":
-                self.Nothing()
+            elif self.predicted_class == "Anomaly":
+                self.Anomaly()
             elif self.predicted_class == "Right_Click":
                 self.Right_Click()
             elif self.predicted_class == "Screenshot":
@@ -63,10 +63,6 @@ class ActionHandler:
                 self.Volume_Increase()
             elif self.predicted_class == "Volume_Decrease":
                 self.Volume_Decrease()
-            elif self.predicted_class == "Play":
-                self.Play()
-            elif self.predicted_class == "Pause":
-                self.Pause()
             elif self.predicted_class == "PowerPoint_Open":
                 self.PowerPoint_Open()
             else:
@@ -74,7 +70,6 @@ class ActionHandler:
         except Exception as e:
             self.logger.error("Error executing action: %s", e)
             print("An error occurred while executing the action.")
-
 
     def Brightness_Increase(self):
         try:
@@ -103,7 +98,6 @@ class ActionHandler:
         except Exception as e:
             self.logger.error("Error increasing brightness: %s", e)
 
-
     # def Brightness_Increase(self):
     #     try:
     #         if platform.system() == 'Darwin':  # for mac
@@ -120,8 +114,7 @@ class ActionHandler:
     #             self.logger.info("Brightness Increased")
     #     except Exception as e:
     #         self.logger.error("Error increasing brightness: %s", e)
-
-
+            
     def Brightness_Decrease(self):
         try:
             if platform.system() == 'Darwin':  # for mac
@@ -147,7 +140,6 @@ class ActionHandler:
                     self.logger.info(f"{monitor} : {sbc.get_brightness(display=monitor)} %")
         except Exception as e:
             self.logger.error("Error decreasing brightness: %s", e)
-
 
     def Chrome_Open(self):
         if platform.system() == "Windows":
@@ -176,7 +168,6 @@ class ActionHandler:
             self.logger.info("Double Clicked")
         except Exception as e:
             self.logger.error("Error performing double click: %s", e)
-
 
     def VSCode_Open(self):
         try:
@@ -207,8 +198,8 @@ class ActionHandler:
         except Exception as e:
             self.logger.error("Error performing left click: %s", e)
         
-    def Nothing(self):
-        self.logger.info("Nothing")
+    def Anomaly(self):
+        self.logger.info("Anomaly")
 
     def Right_Click(self):
         try:
@@ -265,8 +256,6 @@ class ActionHandler:
             self.logger.error("Error taking screenshot: %s", e)
             print("An error occurred while taking a screenshot.")
 
-
-
     def Scroll_Up(self):
         try:
             pyautogui.scroll(1000)
@@ -274,7 +263,6 @@ class ActionHandler:
             self.logger.info("Scrolled Up")
         except Exception as e:
             self.logger.error("Error scrolling: %s", e)
-
 
     def Scroll_Down(self):
         try:
@@ -308,8 +296,7 @@ class ActionHandler:
             self.logger.info("Restart")
         except Exception as e:
             self.logger.error(f"An error occurred: {e}")
-
-
+            
     def Volume_Increase(self):
         try:
             # Check if the system is Windows
@@ -330,7 +317,6 @@ class ActionHandler:
         except Exception as e:
             self.logger.error("Error increasing volume: %s", e)
 
-
     def Volume_Decrease(self):
         try:
             # Check if the system is Windows
@@ -350,16 +336,7 @@ class ActionHandler:
                 # print("Volume Decreased")
         except Exception as e:
             self.logger.error("Error decreasing volume: %s", e)
-        
-    
-    def Play(self):
-        pass
-    
-    
-    def Pause(self):
-        pass
 
-    
     def PowerPoint_Open(self):
         try:
             # Check if the system is Windows
