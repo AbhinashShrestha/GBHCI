@@ -63,9 +63,9 @@ class_labels = {i: class_label_mapping[name] for i, name in enumerate(class_name
 
 # print(index_to_label)
 # print(class_labels[0])
-# print(class_names)
+# print(class_names)``````````````````````
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B3_300x300_final_asl_mix.h5')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2S_300x300_final_asl_mix_fine_tuned.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
