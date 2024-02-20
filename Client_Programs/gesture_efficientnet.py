@@ -30,20 +30,24 @@ skip_frames = 10
 # class_names = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
 #for final asl_mix 
-class_names = ['A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'U', 'V', 'W', 'X', 'Y']
 # class_names = ['A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'U', 'V', 'W', 'X', 'Y']
+# class_names = ['A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'U', 'V', 'W', 'X', 'Y']
+
+
+#final feb 20
+class_names = ['5', 'A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'V', 'W', 'X', 'Y', 'space']
 
 # Define the mapping between class names and labels
 class_label_mapping = {
     'A': 'Shutdown',
     'B': 'Scroll_Up',
-    'Blank': 'Blank',
+    'Blank': 'Anomaly',
     'C': 'Chrome_Open',
     'E': 'Screenshot',
     'F': 'Scroll_Down',
-    'G': 'G',
+    'G': 'Double Click',
     'H': 'H',
-    'I': 'Double Click',
+    # 'I': 'Double Click',
     'L': 'Left_Click',
     'N': 'N',
     'O': 'PowerPoint_Open',
@@ -51,21 +55,19 @@ class_label_mapping = {
     'Q': 'Brightness_Decrease',
     'R': 'Right_Click',
     'S': 'S',
-    'U': 'U',
     'V': 'VSCode_Open',
-    'W': 'W',
+    # 'W': 'W',
     'X': 'Volume_Down',
-    'Y': 'Volume_Increase'
+    'Y': 'Volume_Increase',
+    '5': 'Neutral',
+    'space':'Restart'
 }
 
 # Create a dictionary that maps indices to labels
 class_labels = {i: class_label_mapping[name] for i, name in enumerate(class_names)}
 
-# print(index_to_label)
-# print(class_labels[0])
-# print(class_names)``````````````````````
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2S_300x300_final_asl_mix_fine_tuned.h5')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B3_300x300_final_asl_mix_FEB_20.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
