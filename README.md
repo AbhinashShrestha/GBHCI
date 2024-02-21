@@ -1,67 +1,50 @@
-# Gesture Based Human-Computer Interaction
+"""
+# Gesture-Based Human-Computer Interaction
 
-This is an ongoing project that enables interaction with computers using hand gestures, leveraging advanced deeplearning and computer vision techniques.
-
+This project is a work in progress that allows for interaction with computers using hand gestures. It utilizes machine learning and computer vision techniques.
 
 ## Prerequisites
 
-Ensure you have Python version 3.11.0 or later, but not version 3.12 or later. You can download the appropriate version of Python from the official website.
-You should have the model required for the project too.
+Please ensure you have Python version 3.11.0 or later installed, but not version 3.12 or later. You can download the appropriate version of Python from the official website. Additionally, you should have the model required for this project.
 
-## Setting Up the Environment
+## Environment Setup
 
-1. **Create a Conda environment:**
+1. Create a Conda environment:
+    # conda env create -f environment.yml
 
-    conda create -n major python=3.11.5
+2. Activate the Python virtual environment:
+    # conda activate major
 
-2. **Activate the Python virtual environment:**
-    - On Linux/Mac:
-        ```bash 
-        conda activate major
-        ```
-3. **Deactivate the Python virtual environment when done:**
-    ```bash 
-    deactivate
-    ```
+3. Deactivate the Python virtual environment when done:
+    # conda deactivate
 
-## Installing Dependencies
-Install Cuda
-Install the required Python packages using the following command:
-``` bash
-conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
-```
-tensorflow route
-requires python 3.10 and tensorflow 2.10
-Cuz google is not supporting windows native and my wsl doesnt open
-```
-conda create -n major_tensorflow python=3.10
-conda install -c conda-forge cudatoolkit=11.2 cudnn=8.1.0
-conda install -c nvidia cuda-nvcc
-```
-test if your gpu is detected 
-```
-python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
-```
+## Dependency Installation
 
+Install CUDA (required only for training). This requires Python 3.10 and TensorFlow 2.10. Note that Google does not support Windows natively and my WSL does not open.
+    # conda create -n major_tensorflow python=3.10
+    # conda install -c conda-forge cudatoolkit=11.2 cudnn=8.1.0
+    # conda install -c nvidia cuda-nvcc
 
-install 
-conda install conda-forge::opencv
-pip install mediapipe
-pip install pydot
-## How to use
+To test if your GPU is detected, run the following command:
+    # python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 
+## Usage
+
+To use the application, run the following command:
 ```bash
- python3 gesture.py
+python3 gesture_efficientnet.py
 ```
-## Contribution
 
-All contribution are welcome and encouraged.
+## Contributions
 
-
+All contributions are welcome and encouraged.
 
 ## Troubleshooting
-If you encounter the error OMP: Error #15: Initializing libomp.dylib, but found libiomp5.dylib already initialized, run the following command before running any Python program:
 
-export KMP_DUPLICATE_LIB_OK=TRUE
+If you encounter the error 'OMP: Error #15: Initializing libomp.dylib, but found libiomp5.dylib already initialized', run the following command before running any Python program:
+    # export KMP_DUPLICATE_LIB_OK=TRUE
 
-If the error persists, delete the libomp.dylib file in the environment.
+If the error persists, delete the 'libomp.dylib' file in the environment.
+"""
+
+If you need further help. Open an Issue.
