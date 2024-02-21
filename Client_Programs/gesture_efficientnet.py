@@ -53,7 +53,7 @@ class_label_mapping = {
     'F': 'Scroll_Down',
     'G': 'Double Click',
     'H': 'H',
-    # 'I': 'Double Click',
+    'I': 'Double Click',
     'L': 'Left_Click',
     'N': 'N',
     'O': 'PowerPoint_Open',
@@ -74,7 +74,7 @@ class_label_mapping = {
 class_labels = {i: class_label_mapping[name] for i, name in enumerate(class_names)}
 
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B3_300x300_final_asl_mix_FEB_20_has_3_K_and_no_W_batch_size_64_finetuned.h5')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B3_300x300_final_asl_mix_FEB_21_has_3_K_REMOVED_W_batch_size_16_finetuned.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
