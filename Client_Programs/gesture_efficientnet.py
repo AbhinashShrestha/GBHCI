@@ -39,12 +39,13 @@ skip_frames = 10
 
 
 #final feb 21
-class_names = ['3', '5', 'A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'V', 'X', 'Y', 'space']
+# class_names = ['3', '5', 'A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'V', 'X', 'Y', 'space']
 
+#final feb 21 there are 19 classes
+class_names = ['A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'K', 'L', 'N', 'O', 'P', 'Q', 'S', 'V', 'X', 'Y', 'space']
 
 # Define the mapping between class names and labels
 class_label_mapping = {
-    '3':'3',
     'A': 'Shutdown',
     'B': 'Scroll_Up',
     'Blank': 'Anomaly',
@@ -53,28 +54,24 @@ class_label_mapping = {
     'F': 'Scroll_Down',
     'G': 'Double Click',
     'H': 'H',
-    'I': 'Double Click',
+    'K': 'Right_Click',
     'L': 'Left_Click',
     'N': 'N',
     'O': 'PowerPoint_Open',
     'P': 'Brightness_Increase',
     'Q': 'Brightness_Decrease',
-    'R': 'Right_Click',
-    'S': 'S',
+    'S': 'Neutral',
     'V': 'VSCode_Open',
-    'W': 'W',
     'X': 'Volume_Down',
     'Y': 'Volume_Increase',
-    '5': 'Neutral',
-    'space':'Restart',
-    'K': 'K'
+    'space':'Restart'
 }
 
 # Create a dictionary that maps indices to labels
 class_labels = {i: class_label_mapping[name] for i, name in enumerate(class_names)}
 
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B3_300x300_final_asl_mix_FEB_21_has_3_K_REMOVED_W_batch_size_16_finetuned.h5')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B3_300x300_final_asl_mix_FEB_21_batch_size_64_has_19_classes.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
