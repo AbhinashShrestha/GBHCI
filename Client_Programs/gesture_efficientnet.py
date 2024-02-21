@@ -35,10 +35,16 @@ skip_frames = 10
 
 
 #final feb 20
-class_names = ['5', 'A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'V', 'W', 'X', 'Y', 'space']
+# class_names = ['5', 'A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'V', 'W', 'X', 'Y', 'space']
+
+
+#final feb 21
+class_names = ['3', '5', 'A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'V', 'X', 'Y', 'space']
+
 
 # Define the mapping between class names and labels
 class_label_mapping = {
+    '3':'3',
     'A': 'Shutdown',
     'B': 'Scroll_Up',
     'Blank': 'Anomaly',
@@ -47,7 +53,7 @@ class_label_mapping = {
     'F': 'Scroll_Down',
     'G': 'Double Click',
     'H': 'H',
-    'I': 'Double Click',
+    # 'I': 'Double Click',
     'L': 'Left_Click',
     'N': 'N',
     'O': 'PowerPoint_Open',
@@ -60,14 +66,15 @@ class_label_mapping = {
     'X': 'Volume_Down',
     'Y': 'Volume_Increase',
     '5': 'Neutral',
-    'space':'Restart'
+    'space':'Restart',
+    'K': 'K'
 }
 
 # Create a dictionary that maps indices to labels
 class_labels = {i: class_label_mapping[name] for i, name in enumerate(class_names)}
 
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B3_300x300_final_asl_mix_FEB_20.h5')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B3_300x300_final_asl_mix_FEB_20_has_3_K_and_no_W_batch_size_64_finetuned.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
