@@ -42,7 +42,10 @@ skip_frames = 10
 # class_names = ['3', '5', 'A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'N', 'O', 'P', 'Q', 'R', 'S', 'V', 'X', 'Y', 'space']
 
 #final feb 21 there are 19 classes
-class_names = ['A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'K', 'L', 'N', 'O', 'P', 'Q', 'S', 'V', 'X', 'Y', 'space']
+# class_names = ['A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'K', 'L', 'N', 'O', 'P', 'Q', 'S', 'V', 'X', 'Y', 'space']
+
+#feb 22 Final there are 18 classes
+class_names = ['A', 'B', 'Blank', 'C', 'E', 'F', 'G', 'H', 'L', 'N', 'O', 'P', 'Q', 'S', 'V', 'X', 'Y', 'space']
 
 # Define the mapping between class names and labels
 class_label_mapping = {
@@ -53,8 +56,8 @@ class_label_mapping = {
     'E': 'Screenshot',
     'F': 'Scroll_Down',
     'G': 'Double Click',
-    'H': 'H',
-    'K': 'VSCode_Open',
+    'H': 'Right_Click',
+    # 'K': 'VSCode_Open',
     'L': 'Left_Click',
     'N': 'Right_Click',
     'O': 'PowerPoint_Open',
