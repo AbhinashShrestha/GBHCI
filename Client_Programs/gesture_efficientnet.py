@@ -59,13 +59,13 @@ class_label_mapping = {
     'H': 'Right_Click',
     # 'K': 'VSCode_Open',
     'L': 'Left_Click',
-    'N': 'Right_Click',
+    'N': 'N',
     'O': 'PowerPoint_Open',
     'P': 'Brightness_Increase',
     'Q': 'Brightness_Decrease',
     'S': 'Neutral',
     'V': 'VSCode_Open',
-    'X': 'Volume_Down',
+    'X': 'Volume_Decrease',
     'Y': 'Volume_Increase',
     'space':'Restart'
 }
