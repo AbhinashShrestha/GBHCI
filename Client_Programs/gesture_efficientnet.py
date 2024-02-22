@@ -74,7 +74,7 @@ class_label_mapping = {
 class_labels = {i: class_label_mapping[name] for i, name in enumerate(class_names)}
 
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B3_FEB_22_18_classes_A_B_Blank_C_E_F_G_H_L_N_O_P_Q_S_V_X_Y_space_finetuned.h5')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B2_FEB_22_batch_size_64_18_classes_A_B_Blank_C_E_F_G_H_L_N_O_P_Q_S_V_X_Y_space.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
