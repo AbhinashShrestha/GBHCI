@@ -9,7 +9,7 @@ from google.protobuf.json_format import MessageToDict
 
 pyautogui.FAILSAFE = False
 mp_drawing = mp.solutions.drawing_utils
-mp_hands = mp.solutions.hands.Hands(max_num_hands=1)
+mp_hands = mp.solutions.hands
 
 # Gesture Encodings 
 class Gest(IntEnum):
