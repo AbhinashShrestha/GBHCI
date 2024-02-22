@@ -99,24 +99,25 @@ import os
 folder_label_mapping = {
     'A': 'Shutdown',
     'B': 'Scroll_Up',
+    'Blank': 'Anomaly',
     'C': 'Chrome_Open',
     'E': 'Screenshot',
     'F': 'Scroll_Down',
-    'G': 'G',
+    'G': 'Double Click',
     'H': 'H',
-    'I': 'Double Click',
+    'K': 'VSCode_Open',
     'L': 'Left_Click',
-    'N': 'N',
+    'N': 'Right_Click',
     'O': 'PowerPoint_Open',
     'P': 'Brightness_Increase',
     'Q': 'Brightness_Decrease',
-    'R': 'Right_Click',
-    'S': 'S',
-    'U': 'U',
+    'S': 'Neutral',
     'V': 'VSCode_Open',
     'X': 'Volume_Down',
-    'Y': 'Volume_Increase'
+    'Y': 'Volume_Increase',
+    'space':'Restart'
 }
+
 
 # Specify the path of the main folder
 main_folder_path = r'E:\MajorProject\Gesture based HCI\GBHCI\Data\asl_dataset'
