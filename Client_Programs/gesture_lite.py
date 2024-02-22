@@ -5,13 +5,11 @@ import math
 from enum import IntEnum
 from ctypes import cast, POINTER
 from comtypes import CLSCTX_ALL
-from pycaw.pycaw import AudioUtilities, IAudioEndpointVolume
 from google.protobuf.json_format import MessageToDict
-import screen_brightness_control as sbcontrol
 
 pyautogui.FAILSAFE = False
 mp_drawing = mp.solutions.drawing_utils
-mp_hands = mp.solutions.hands
+mp_hands = mp.solutions.hands.Hands(max_num_hands=1)
 
 # Gesture Encodings 
 class Gest(IntEnum):
@@ -284,42 +282,6 @@ class Controller:
         """returns distance beween starting pinch x coord and current hand position x coord."""
         dist = round((hand_result.landmark[8].x - Controller.pinchstartxcoord)*10,1)
         return dist
-    
-    def changesystembrightness():
-        """sets system brightness based on 'Controller.pinchlv'."""
-        currentBrightnessLv = sbcontrol.get_brightness(display=0)/100.0
-        currentBrightnessLv += Controller.pinchlv/50.0
-        if currentBrightnessLv > 1.0:
-            currentBrightnessLv = 1.0
-        elif currentBrightnessLv < 0.0:
-            currentBrightnessLv = 0.0       
-        sbcontrol.fade_brightness(int(100*currentBrightnessLv) , start = sbcontrol.get_brightness(display=0))
-    
-    def changesystemvolume():
-        """sets system volume based on 'Controller.pinchlv'."""
-        devices = AudioUtilities.GetSpeakers()
-        interface = devices.Activate(IAudioEndpointVolume._iid_, CLSCTX_ALL, None)
-        volume = cast(interface, POINTER(IAudioEndpointVolume))
-        currentVolumeLv = volume.GetMasterVolumeLevelScalar()
-        currentVolumeLv += Controller.pinchlv/50.0
-        if currentVolumeLv > 1.0:
-            currentVolumeLv = 1.0
-        elif currentVolumeLv < 0.0:
-            currentVolumeLv = 0.0
-        volume.SetMasterVolumeLevelScalar(currentVolumeLv, None)
-    
-    def scrollVertical():
-        """scrolls on screen vertically."""
-        pyautogui.scroll(120 if Controller.pinchlv>0.0 else -120)
-        
-    
-    def scrollHorizontal():
-        """scrolls on screen horizontally."""
-        pyautogui.keyDown('shift')
-        pyautogui.keyDown('ctrl')
-        pyautogui.scroll(-120 if Controller.pinchlv>0.0 else 120)
-        pyautogui.keyUp('ctrl')
-        pyautogui.keyUp('shift')
 
     # Locate Hand to get Cursor Position
     # Stabilize cursor by Dampening
@@ -587,8 +549,8 @@ class GestureController:
                         mp_drawing.draw_landmarks(image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
                 else:
                     Controller.prev_hand = None
-                cv2.imshow('Gesture Controller', image)
-                if cv2.waitKey(5) & 0xFF == 13:
+                cv2.imshow('Lite Model', image)
+                if cv2.waitKey(5) & 0xFF == 27:
                     break
         GestureController.cap.release()
         cv2.destroyAllWindows()
