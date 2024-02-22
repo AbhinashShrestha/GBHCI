@@ -272,30 +272,32 @@ class ActionHandler:
             self.logger.error("Error scrolling: %s", e)
 
     def Shutdown(self):
-        try:
-            if platform.system() == "Darwin":
-                os.system("sudo -S shutdown -h now")
-            elif platform.system() == "Windows":
-                os.system("shutdown /s")
-            else:
-                self.logger.error("Unsupported operating system.")
-                return
-            self.logger.info("Shutdown")
-        except Exception as e:
-            self.logger.error(f"An error occurred: {e}")
+        # try:
+        #     if platform.system() == "Darwin":
+        #         os.system("sudo -S shutdown -h now")
+        #     elif platform.system() == "Windows":
+        #         os.system("shutdown /s")
+        #     else:
+        #         self.logger.error("Unsupported operating system.")
+        #         return
+        #     self.logger.info("Shutdown")
+        # except Exception as e:
+        #     self.logger.error(f"An error occurred: {e}")
+        pass
 
     def Restart(self):
-        try:
-            if platform.system() == "Darwin":
-                os.system("sudo -S shutdown -r now")
-            elif platform.system() == "Windows":
-                os.system("shutdown /r /t 1")
-            else:
-                self.logger.error("Unsupported operating system.")
-                return
-            self.logger.info("Restart")
-        except Exception as e:
-            self.logger.error(f"An error occurred: {e}")
+        # try:
+        #     if platform.system() == "Darwin":
+        #         os.system("sudo -S shutdown -r now")
+        #     elif platform.system() == "Windows":
+        #         os.system("shutdown /r /t 1")
+        #     else:
+        #         self.logger.error("Unsupported operating system.")
+        #         return
+        #     self.logger.info("Restart")
+        # except Exception as e:
+        #     self.logger.error(f"An error occurred: {e}")
+        pass
             
     def Volume_Increase(self):
         try:
