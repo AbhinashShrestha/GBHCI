@@ -9,9 +9,6 @@ import platform
 import tkinter as tk
 from tkinter import messagebox
 
-
-
-
 class ActionHandler:
     def __init__(self, predicted_class):
         self.predicted_class = predicted_class
@@ -141,15 +138,37 @@ class ActionHandler:
         except Exception as e:
             self.logger.error("Error decreasing brightness: %s", e)
 
+    # def Chrome_Open(self):
+    #     if platform.system() == "Windows":
+    #         subprocess.run(["powershell", "-Command", "Start-Process chrome"])
+    #     elif platform.system() == "Darwin":  # Darwin is the OS name for Mac
+    #         subprocess.run(["open", "-a", "Google Chrome"])
+    #     else:
+    #         self.logger.error("Unsupported platform: %s", platform.system())
+    #         return
+    #     self.logger.info("Chrome Opened")
     def Chrome_Open(self):
-        if platform.system() == "Windows":
-            subprocess.run(["powershell", "-Command", "Start-Process chrome"])
-        elif platform.system() == "Darwin":  # Darwin is the OS name for Mac
-            subprocess.run(["open", "-a", "Google Chrome"])
-        else:
-            self.logger.error("Unsupported platform: %s", platform.system())
-            return
-        self.logger.info("Chrome Opened")
+        try:
+            if platform.system() == "Windows":
+                # # Define the PowerShell command
+                # ps_command = 'Start-Process "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"'
+                # # Run the PowerShell command
+                # subprocess.Popen(["powershell", "-Command", ps_command], stdout=subprocess.PIPE)
+                subprocess.run(["powershell", "-Command", "Start-Process chrome"])
+            elif platform.system() == "Darwin":  # Darwin is the OS name for Mac
+                subprocess.run(["open", "-a", "Google Chrome"])
+                self.logger.info("Google Chrome Opened")
+            else:
+                self.logger.error("Unsupported platform: %s", platform.system())
+                return
+        except (subprocess.CalledProcessError, OSError):
+            # If Google Chrome can't be opened, show a message box
+            root = tk.Tk()
+            root.withdraw()  # Hide the main window
+            messagebox.showinfo("Error", "Google Chrome could not be opened.")
+            root.destroy()  # Destroy the main window
+            self.logger.error("Google Chrome could not be opened.")
+
 
     def Cursor_Movement(self):
         self.logger.info("Cursor Moved")
@@ -178,7 +197,7 @@ class ActionHandler:
                 # Run the PowerShell command
                 subprocess.Popen(["powershell", "-Command", ps_command], stdout=subprocess.PIPE)
             elif platform.system() == "Darwin":  # Darwin is the OS name for Mac
-                subprocess.run(["open", "-a", "Visual Studio Code"])
+                subprocess.run(["open", "-a", "Zed"])
                 self.logger.info("VSCode Opened")
             else:
                 self.logger.error("Unsupported platform: %s", platform.system())
@@ -203,7 +222,6 @@ class ActionHandler:
 
     def Right_Click(self):
         try:
-            # pyautogui.click(button='right')
             pyautogui.rightClick()
             self.logger.info("Right Clicked")
         except Exception as e:
@@ -259,14 +277,13 @@ class ActionHandler:
     def Scroll_Up(self):
         try:
             pyautogui.scroll(1000)
-            # pyautogui.mouseDown()
             self.logger.info("Scrolled Up")
         except Exception as e:
             self.logger.error("Error scrolling: %s", e)
 
     def Scroll_Down(self):
         try:
-            pyautogui.scroll(-5000)
+            pyautogui.scroll(-1000)
             self.logger.info("Scrolled Down")
         except Exception as e:
             self.logger.error("Error scrolling: %s", e)
@@ -343,11 +360,13 @@ class ActionHandler:
         try:
             # Check if the system is Windows
             if platform.system() == "Windows":
-                # Define the PowerShell command
+                # # Define the PowerShell command
                 ps_command = 'Start-Process "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\PowerPoint.lnk"'
-                
                 # Run the PowerShell command
                 subprocess.Popen(["powershell", "-Command", ps_command], stdout=subprocess.PIPE)
+            elif platform.system() == "Darwin":  # Darwin is the OS name for Mac
+                subprocess.run(["open", "-a", "Microsoft PowerPoint"])
+                self.logger.info("VSCode Opened")
             else:
                 self.logger.error("Unsupported platform: %s", platform.system())
                 return
@@ -357,6 +376,6 @@ class ActionHandler:
 
 
 # Example usage:
-# predicted_class = "Brightness_Increase"  # Replace this with the actual predicted class
-# handler = ActionHandler(predicted_class)
-# handler.execute_action()
+predicted_class = "Chrome_Open"  # Replace this with the actual predicted class
+handler = ActionHandler(predicted_class)
+handler.execute_action()
