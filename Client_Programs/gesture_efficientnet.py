@@ -74,7 +74,7 @@ class_label_mapping = {
 class_labels = {i: class_label_mapping[name] for i, name in enumerate(class_names)}
 
 
-model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EfficientNetV2B2_FEB_22_batch_size_64_18_classes_A_B_Blank_C_E_F_G_H_L_N_O_P_Q_S_V_X_Y_space.h5')
+model = load_model(r'E:\MajorProject\Gesture based HCI\GBHCI\Non_Git\Models\EV2B2\EfficientNetV2B2_FEB_22_batch_size_64_18_classes_A_B_Blank_C_E_F_G_H_L_N_O_P_Q_S_V_X_Y_space_finetuned.h5')
 
 # Initialize MediaPipe Hands
 mp_drawing = mp.solutions.drawing_utils
@@ -140,8 +140,8 @@ while cap.isOpened():
                 predictions = model.predict(img) 
                 predicted_class = np.argmax(predictions[0])
                 confidence = np.max(predictions[0])
-                # handler = ActionHandler(class_labels[predicted_class])
-                # handler.execute_action()
+                handler = ActionHandler(class_labels[predicted_class])
+                handler.execute_action()
 
                 # Print the class name and confidence
                 print('The predicted class is:', class_labels[predicted_class])

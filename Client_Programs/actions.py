@@ -376,6 +376,6 @@ class ActionHandler:
 
 
 # Example usage:
-predicted_class = "Chrome_Open"  # Replace this with the actual predicted class
-handler = ActionHandler(predicted_class)
-handler.execute_action()
+# predicted_class = "Chrome_Open"  # Replace this with the actual predicted class
+# handler = ActionHandler(predicted_class)
+# handler.execute_action()
