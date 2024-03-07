@@ -9,43 +9,43 @@ Please ensure you have Python version 3.11.0 or later installed, but not version
 ## Environment Setup
 
 1. Create a Conda environment:
-    ```bash
-    conda env create -f environment.yml
+    ```
+        conda env create -f environment.yml
     ```
 2. Activate the Python virtual environment:
-    ```bash
-    conda activate major
+    ```
+        conda activate major
     ```
 3. Deactivate the Python virtual environment when done:
-    ```bash
-    conda deactivate
+    ```
+        conda deactivate
     ```
 ## Dependency Installation
 
 Install CUDA (required only for training). This requires Python 3.10 and TensorFlow 2.10. Note that Google does not support Windows natively and my WSL does not open.
-    ```bash
+    ```
         conda create -n major_tensorflow python=3.10
     ```
 
-    ```bash
-    conda install -c conda-forge cudatoolkit=11.2 cudnn=8.1.0
+    ```
+        conda install -c conda-forge cudatoolkit=11.2 cudnn=8.1.0
     ```
     
-    ```bash
-    conda install -c nvidia cuda-nvcc
+    ```
+        conda install -c nvidia cuda-nvcc
     ```
 
 
     
 To test if your GPU is detected, run the following command:
-    ```bash
-    python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
+    ```
+        python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
     ```
 ## Usage
 
 To use the application, run the following command:
-```bash
-python3 gesture_efficientnet.py
+```
+    python3 gesture_efficientnet.py
 ```
 
 ## Contributions
