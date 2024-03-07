@@ -31,7 +31,8 @@ Please ensure you have Python version 3.11.0 or later installed, but not version
 
 ## Dependency Installation
 
-Install CUDA (required only for training). This requires Python 3.10 and TensorFlow 2.10. Note that Tensorflow does not support Windows natively after version 2.10. All training must be done in WSL2
+Install CUDA (required only for training). This requires Python 3.10 and TensorFlow 2.10. Note that Tensorflow does not support Windows natively after version 2.10. All training must be done in WSL2:
+
     ```bash
     conda create -n major_tensorflow python=3.10
     conda install -c conda-forge cudatoolkit=11.2 cudnn=8.1.0
@@ -39,6 +40,7 @@ Install CUDA (required only for training). This requires Python 3.10 and TensorF
     ```
 
 To test if your GPU is detected, run the following command:
+
     ```bash
     python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
     ```
