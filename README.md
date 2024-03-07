@@ -27,14 +27,9 @@ Install CUDA (required only for training). This requires Python 3.10 and TensorF
         conda create -n major_tensorflow python=3.10
     ```
 
-
-
-    
     ```bash
     conda install -c conda-forge cudatoolkit=11.2 cudnn=8.1.0
     ```
-
-
     
     ```bash
     conda install -c nvidia cuda-nvcc
