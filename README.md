@@ -1,4 +1,3 @@
-"""
 # Gesture-Based Human-Computer Interaction
 
 This project allows for interaction with computers using hand gestures. It utilizes machine learning and computer vision techniques.
@@ -50,3 +49,9 @@ CLOSED UNTIL FURTHER NOTICE
 
 ## USAGE
  REQUIRES A classifier .h5 model trained on the bespoke dataset. Email for the classifier or train your own using the main_efficientnet.py
+
+## License and Support
+
+This project is licensed under the Apache License. You are free to use, modify, and distribute the code as per the terms of the license.
+
+While the code is open-source, please note that any support or assistance provided in relation to this project is not free. If you require support or assistance in using this project, please contact me for details about support options and pricing.
