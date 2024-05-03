@@ -1,62 +1,63 @@
 import torch
+from torch import nn 
+from efficientnet_pytorch import EfficientNet
 import pytorch_lightning as pl 
-from pytorch_lightning.callbacks import EarlyStopping, ModelCheckpoint
+import torchmetrics
 
-from model import neuralnet
-from dataset import HandSignDataModule
-import argparse
+class neuralnet(pl.LightningModule):
+    def __init__(self, num_classes):
+        super(neuralnet, self).__init__()
+        self.model = EfficientNet.from_pretrained('efficientnet-b5')
 
-def main(args):
-    # Setting up device agnostic code
-    device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    dataloader = HandSignDataModule(train_dir=args.train_dir, 
-                                    batch_size=args.batch_size, 
-                                    num_workers=args.data_workers)
+        # Modify the classifier layer
+        # Get the number of input features to the classifier
+        num_ftrs = self.model._fc.in_features  
+        self.model._fc = torch.nn.Sequential(torch.nn.Dropout(p=0.2, inplace=True),
+                                             torch.nn.Linear(in_features=num_ftrs, 
+                                                             out_features=num_classes, 
+                                                             bias=True))
+        
+        # Setup Metrics
+        self.loss_fn = nn.CrossEntropyLoss()
+        self.accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=num_classes) 
+        self.f1_score = torchmetrics.F1Score(task="multiclass", num_classes=num_classes) 
+        
+    def forward(self, x):
+        return self.model(x)
     
-    # Call setup to initialize datasets
-    dataloader.setup('fit')  
-    num_classes = dataloader.get_num_classes()
-
-    # Initialize the model
-    model = neuralnet(num_classes=num_classes).to(device)
-
-    # Create a checkpoint callback
-    # Save the model periodically by monitoring a quantity
-    checkpoint_callback = ModelCheckpoint(monitor="val_loss",                    # Quantity to monitor | By default: None(saves last chekpoint)
-                                          dirpath="/saved_checkpoint/",           # Directory to save the model file.
-                                          filename="model-{epoch:02d}-{val_loss:.2f}")   # Checkpoint filename
-
-    # Create a Trainer instance for managing the training process.
-    trainer = pl.Trainer(accelerator=device,
-                         devices=args.gpus,
-                         min_epochs=1,
-                         max_epochs=args.epochs,
-                         precision=args.precision,
-                         callbacks=[EarlyStopping(monitor="val_loss"),   # Monitor a metric and stop training when it stops improving
-                                    checkpoint_callback])                # Pass defined checkpoint callback
-
-    # Fit the model to the training data using the Trainer's fit method.
-    trainer.fit(model, dataloader)
-    trainer.validate(model, dataloader)
-    # trainer.test(model, dataloader)
-
-
-if __name__  == "__main__":
-    parser = argparse.ArgumentParser(description="Train")
-
-    # Train Device Hyperparameters
-    parser.add_argument('-g', '--gpus', default=1, type=int, help='number of gpus per node')
-    parser.add_argument('-w', '--data_workers', default=0, type=int,
-                        help='n data loading workers, default 0 = main process only')
-
-    # Train Directory Params
-    parser.add_argument('--train_dir', default=None, required=True, type=str,
-                        help='Folder path to load training data')
+    def _common_step(self, batch, batch_idx):
+        X, y = batch                       
+        y_pred = self.forward(X)       
+        loss = self.loss_fn(y_pred, y) 
+        return loss, y_pred, y
     
-    # General Train Hyperparameters
-    parser.add_argument('--epochs', default=10, type=int, help='number of total epochs to run')
-    parser.add_argument('--batch_size', default=64, type=int, help='size of batch')
-    parser.add_argument('--precision', default=16, type=int, help='precision')
+    def training_step(self, batch, batch_idx):
+        loss, y_pred, y = self._common_step(batch, batch_idx)
+        accuracy = self.accuracy(y_pred, y)  
+        f1_score = self.f1_score(y_pred, y)
+        self.log_dict({"loss": loss, 
+                        "accuracy": accuracy, 
+                        "f1_score": f1_score}, 
+                        on_step=True, on_epoch=False, 
+                        prog_bar=True, logger=True)
+        return loss
     
-    args = parser.parse_args()
-    main(args)
+    def validation_step(self, batch, batch_idx):
+        loss, y_pred, y = self._common_step(batch, batch_idx) 
+        accuracy = self.accuracy(y_pred, y)
+        self.log("val_loss", loss, prog_bar=True)       # Log valdiation loss in prog bar
+        self.log('val_acc', accuracy, prog_bar=True)     # Log accuracy loss in prog bar
+        return loss
+    
+    def test_step(self, batch, batch_idx):
+        pass
+    
+    def predict_step(self, batch, batch_idx):
+        X = batch
+        y_pred = self.forward(X)
+        preds = torch.argmax(y_pred, dim=1) 
+        return preds
+
+    def configure_optimizers(self):
+        return torch.optim.Adam(self.parameters(), lr=0.001)
+    
