@@ -1,41 +1,21 @@
-"""Download and extract dataset from Kaggle"""
+""" Download and Extract dataset from google drive"""
 
-import argparse
+import gdown
+import rarfile
 import os
-from kaggle.api.kaggle_api_extended import KaggleApi
-import zipfile
 
-def download_and_extract_dataset():
-    # Initialize the Kaggle API
-    api = KaggleApi()
-    api.authenticate()
+file_url = "https://drive.google.com/uc?id=1b0-MLad_AcVvbocCk7RUB2XH5Xbr7L3x"
+file_name = "ASL.rar"
 
-    # Set the dataset name and paths
-    dataset_name = 'ayuraj/american-sign-language-dataset'
-    zip_file_name = f"{dataset_name.split('/')[1]}.zip"
-    zip_file_path = os.path.join(os.getcwd(), zip_file_name)
-    extract_path = os.path.join(os.getcwd(), "dataset")
+# Download the file from Google Drive and extract
+gdown.download(file_url, file_name, quiet=False)
+extract_dir = './dataset'
 
-    # Check if the zip file already exists
-    if os.path.exists(zip_file_path):
-        print("Dataset zip file already exists. Skipping download.")
-    else:
-        api.dataset_download_files(dataset_name)
+# Extract the RAR file
+with rarfile.RarFile(file_name, 'r') as rar_ref:
+    rar_ref.extractall(extract_dir)
 
-    # Extract zip file
-    with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
-        zip_ref.extractall(extract_path)
+# Remove the RAR file after extraction
+os.remove(file_name)
 
-    # Remove the zip file after extraction
-    if os.path.exists(zip_file_path):
-        os.remove(zip_file_path)
-
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Download and extract dataset from Kaggle")
-    parser.add_argument("--json_path", type=str, required=True, help="Relative path to the Kaggle JSON file")
-    args = parser.parse_args()
-
-    # Set KAGGLE_CONFIG_DIR environment variable to the parent directory of the JSON file
-    os.environ['KAGGLE_CONFIG_DIR'] = os.path.dirname(args.json_path)
-
-    download_and_extract_dataset()
+print("Files extracted successfully to:", extract_dir)
