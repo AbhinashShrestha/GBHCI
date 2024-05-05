@@ -41,12 +41,17 @@ For real-time loss curve plotting, edit `.env` with your Comet.ml API key and pr
 API_KEY = "YOUR_API_KEY"
 PROJECT_NAME = "YOUR_PROJECT_NAME"
 ```
-### Download Datasets
 
+### Download Datasets
+> _Note: It may take several minutes depending on your internet connection to download and extract_
+
+```bash
+python3 dataset_downloader.py
+```
 
 ### Change Model
 
-If you want to change the architecture of the model, you can choose between EfficientNet B0 - B7 models and edit in `model.py`.
+If you want to change the architecture of the model, you can choose between `EfficientNet B0 - B7` models and edit in `model.py`.
 
 > _Note: Changing the model version as you go would increase your GPU memory consumption, time, and final model checkpoint file size_
 
@@ -57,7 +62,6 @@ class neuralnet(pl.LightningModule):
         self.model = EfficientNet.from_pretrained('efficientnet-b1')
         # self.model = EfficientNet.from_pretrained('efficientnet-b2')
         # self.model = EfficientNet.from_pretrained('efficientnet-b5')
-
 ```
 
 ### Training Model
