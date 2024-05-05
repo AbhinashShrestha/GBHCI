@@ -23,7 +23,7 @@ def main(args):
     # Create a checkpoint callback
     # Save the model periodically by monitoring a quantity
     checkpoint_callback = ModelCheckpoint(monitor="val_loss",                    # Quantity to monitor | By default: None(saves last chekpoint)
-                                          dirpath="/saved_checkpoint/",           # Directory to save the model file.
+                                          dirpath="saved_checkpoint/",           # Directory to save the model file.
                                           filename="model-{epoch:02d}-{val_loss:.2f}")   # Checkpoint filename
 
     # Create a Trainer instance for managing the training process.
@@ -35,7 +35,7 @@ def main(args):
                          callbacks=[EarlyStopping(monitor="val_loss"),   # Monitor a metric and stop training when it stops improving
                                     checkpoint_callback])                # Pass defined checkpoint callback
 
-    # Fit the model to the training data using the Trainer's fit method.
+    # Fit the model 
     trainer.fit(model, dataloader)
     trainer.validate(model, dataloader)
     # trainer.test(model, dataloader)
