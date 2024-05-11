@@ -11,10 +11,13 @@ asl
 Models
 Data
 major_env
+.env
+
 # Ignore classmates_test_images
 classmates_test_images/
 Segmented_Dataset/
 runs/
+
 # Ignore files with .h5 extension
 *.h5
 
@@ -24,6 +27,7 @@ runs/
 *.log
 *.zip
 Non_Git
+
 #ignore 
 .DS_Store
 __pycache__/
