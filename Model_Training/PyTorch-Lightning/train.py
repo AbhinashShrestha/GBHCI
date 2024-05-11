@@ -56,7 +56,7 @@ if __name__  == "__main__":
     # General Train Hyperparameters
     parser.add_argument('--epochs', default=10, type=int, help='number of total epochs to run')
     parser.add_argument('--batch_size', default=64, type=int, help='size of batch')
-    parser.add_argument('--precision', default=16, type=int, help='precision')
+    parser.add_argument('--precision', default=16, type=str, help='precision')
     
     args = parser.parse_args()
     main(args)
